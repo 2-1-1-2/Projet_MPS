@@ -10,7 +10,7 @@ int main()
         return EXIT_FAILURE;
 
     // Actual application code
-    auto ctx = p6::Context{{.title = "Simple-p6-Setup"}};
+    auto ctx = p6::Context{{.title = "Projet_MPS"}};
     ctx.maximize_window();
 
     // Declare your infinite update loop.
