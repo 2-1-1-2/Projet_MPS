@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include "Boid.hpp"
 
@@ -14,13 +15,26 @@ class Flock {
     - Cohésion
     */
 private:
-    std::vector<Boid> flock;
+    std::vector<Boid> boids;
 
 public:
-    Flock(const unsigned int number)
+    explicit Flock(const unsigned int number)
     {
         for (unsigned int i = 0; i < number; i++)
-            flock.emplace_back(Boid{});
+            boids.emplace_back(Boid());
+    }
+
+    std::vector<Boid> getBoids() const
+    {
+        return boids;
+    }
+
+    void move()
+    {
+        for (auto& b : boids) // access by reference to avoid copying
+        {
+            b.move(boids);
+        }
     }
 
 private:
