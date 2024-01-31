@@ -5,17 +5,20 @@
 
 void Boid::avoid(const std::vector<Boid>& boids)
 {
-    for (const Boid& other : boids)
+    glm::vec2 close(0, 0);
+
+    for (const Boid other : boids)
     {
         if (&other != this)
         {
-            double distance = glm::length(position - other.position);
-            if (distance < avoidFactor)
+            if (glm::length(position - other.position) < distAVF)
             {
-                velocity += (position - other.position);
+                close += position - other.position;
             }
         }
     }
+
+    velocity += close * static_cast<float>(avoidFactor);
 }
 void Boid::alignment(const std::vector<Boid>& boids)
 {
@@ -26,7 +29,7 @@ void Boid::alignment(const std::vector<Boid>& boids)
     {
         if (&other != this)
         {
-            if (glm::length(position - other.position) < alignmentFactor)
+            if (glm::length(position - other.position) < distALF)
             {
                 avgVel += other.velocity;
                 count++;
@@ -37,7 +40,7 @@ void Boid::alignment(const std::vector<Boid>& boids)
     if (count > 0)
     {
         avgVel /= count;
-        velocity += (avgVel - velocity) * 0.1f;
+        velocity += (avgVel - velocity) * static_cast<float>(alignmentFactor);
     }
 }
 void Boid::cohesion(const std::vector<Boid>& boids)
@@ -49,7 +52,7 @@ void Boid::cohesion(const std::vector<Boid>& boids)
     {
         if (&other != this)
         {
-            if (glm::length(position - other.position) < cohesionFactor)
+            if (glm::length(position - other.position) < distCOF)
             {
                 avgPos += other.position;
                 count++;
@@ -60,7 +63,7 @@ void Boid::cohesion(const std::vector<Boid>& boids)
     if (count > 0)
     {
         avgPos /= count;
-        velocity += (avgPos - position) * 0.1f;
+        velocity += (avgPos - position) * static_cast<float>(cohesionFactor) / static_cast<float>(200);
     }
 }
 
@@ -73,19 +76,21 @@ void Boid::limitSpeed()
     if (speed > maxSpeed)
     {
         velocity *= (maxSpeed / speed);
-        std::cout << velocity.x << "\n";
-        std::cout << velocity.y << "\n";
+    }
+    if (speed < minSpeed)
+    {
+        velocity *= (minSpeed / speed);
     }
 }
 
 void Boid::move(const std::vector<Boid>& boids)
 {
+    position += velocity;
     wallCollision();
-    alignment(boids);
     cohesion(boids);
     avoid(boids);
+    alignment(boids);
     limitSpeed();
-    position += velocity;
 }
 
 void Boid::wallCollision()

@@ -10,11 +10,15 @@ private:
     double                  cohesionFactor;
     glm::vec2               position;
     glm::vec2               velocity;
-    static constexpr double maxSpeed = 0.01;
+    static constexpr double maxSpeed = 0.006;
+    static constexpr double minSpeed = 0.003;
+    static constexpr double distAVF  = 0.1;
+    static constexpr double distALF  = 0.4;
+    static constexpr double distCOF  = 0.4;
 
 public:
     Boid()
-        : Boid(glm::vec2(Math::randomDouble(), Math::randomDouble()), glm::vec2(Math::randomDouble(), Math::randomDouble()), 0.2, 0.5, 0.4){};
+        : Boid(glm::vec2(Math::randomDouble(), Math::randomDouble()), glm::vec2(Math::randomDouble(), Math::randomDouble()), 0.5, 0.5, 0.5){};
 
     Boid(glm::vec2 p, glm::vec2 v, double avf, double alf, double cof)
         : avoidFactor(avf), alignmentFactor(alf), cohesionFactor(cof), position(p), velocity(v)
