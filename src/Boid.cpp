@@ -77,3 +77,25 @@ void Boid::limitSpeed()
         std::cout << velocity.y << "\n";
     }
 }
+
+void Boid::move(const std::vector<Boid>& boids)
+{
+    wallCollision();
+    // avoid(boids);
+    alignment(boids);
+    // cohesion(boids);
+    limitSpeed();
+    position += velocity;
+}
+
+void Boid::wallCollision()
+{
+    if (std::abs((position + velocity).x) >= 1)
+    {
+        velocity.x = -velocity.x;
+    }
+    if (std::abs((position + velocity).y) >= 1)
+    {
+        velocity.y = -velocity.y;
+    }
+}

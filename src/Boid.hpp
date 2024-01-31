@@ -29,31 +29,14 @@ public:
 
     glm::vec2 getPos() const { return position; }
 
-    void move(const std::vector<Boid>& boids)
-    {
-        wallCollision();
-        avoid(boids);
-        alignment(boids);
-        cohesion(boids);
-        limitSpeed();
-        position += velocity;
-    }
+    void move(const std::vector<Boid>& boids);
 
-    void wallCollision()
-    {
-        if (std::abs((position + velocity).x) >= 1)
-        {
-            velocity.x = -velocity.x;
-        }
-        if (std::abs((position + velocity).y) >= 1)
-        {
-            velocity.y = -velocity.y;
-        }
-    }
+    void wallCollision();
 
     void avoid(const std::vector<Boid>& boids);
     void alignment(const std::vector<Boid>& boids);
     void cohesion(const std::vector<Boid>& boids);
 
     void limitSpeed();
+    ~Boid() = default;
 };

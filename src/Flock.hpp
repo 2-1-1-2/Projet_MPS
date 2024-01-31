@@ -31,7 +31,7 @@ public:
 
     void move()
     {
-        for (auto& b : boids) // access by reference to avoid copying
+        for (auto& b : boids)
         {
             b.move(boids);
         }
