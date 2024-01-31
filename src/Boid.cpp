@@ -81,9 +81,9 @@ void Boid::limitSpeed()
 void Boid::move(const std::vector<Boid>& boids)
 {
     wallCollision();
-    // avoid(boids);
     alignment(boids);
-    // cohesion(boids);
+    cohesion(boids);
+    avoid(boids);
     limitSpeed();
     position += velocity;
 }

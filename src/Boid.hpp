@@ -14,16 +14,14 @@ private:
 
 public:
     Boid()
-        : Boid(glm::vec2(Math::randomDouble(), Math::randomDouble()), glm::vec2(Math::randomDouble(), Math::randomDouble()), Math::randomDouble(), Math::randomDouble(), Math::randomDouble()){};
+        : Boid(glm::vec2(Math::randomDouble(), Math::randomDouble()), glm::vec2(Math::randomDouble(), Math::randomDouble()), 0.2, 0.5, 0.4){};
 
     Boid(glm::vec2 p, glm::vec2 v, double avf, double alf, double cof)
         : avoidFactor(avf), alignmentFactor(alf), cohesionFactor(cof), position(p), velocity(v)
     {
         position *= glm::vec2(Math::randomSign(), Math::randomSign());
         velocity /= 100;
-        avoidFactor /= 10;
-        alignmentFactor /= 10;
-        cohesionFactor /= 10;
+
         velocity *= glm::vec2(Math::randomSign(), Math::randomSign());
     };
 
