@@ -3,11 +3,23 @@
 #include <iostream>
 #include "glm/fwd.hpp"
 
+static constexpr float maxSpeed = 0.006;
+static constexpr float minSpeed = 0.003;
+
+Boid::Boid(glm::vec2 p, glm::vec2 v, float avf, float alf, float cof)
+    : avoidFactor(avf), alignmentFactor(alf), cohesionFactor(cof), position(p), velocity(v)
+{
+    position *= glm::vec2(Math::randomSign(), Math::randomSign());
+    velocity /= 100;
+
+    velocity *= glm::vec2(Math::randomSign(), Math::randomSign());
+};
+
 void Boid::avoid(const std::vector<Boid>& boids)
 {
     glm::vec2 close(0, 0);
 
-    for (const Boid other : boids)
+    for (const Boid& other : boids)
     {
         if (&other != this)
         {
@@ -18,14 +30,14 @@ void Boid::avoid(const std::vector<Boid>& boids)
         }
     }
 
-    velocity += close * static_cast<float>(avoidFactor);
+    velocity += close * avoidFactor;
 }
 void Boid::alignment(const std::vector<Boid>& boids)
 {
     glm::vec2 avgVel(0, 0);
     int       count = 0;
 
-    for (const Boid other : boids)
+    for (const Boid& other : boids)
     {
         if (&other != this)
         {
@@ -40,9 +52,10 @@ void Boid::alignment(const std::vector<Boid>& boids)
     if (count > 0)
     {
         avgVel /= count;
-        velocity += (avgVel - velocity) * static_cast<float>(alignmentFactor);
+        velocity += (avgVel - velocity) * alignmentFactor;
     }
 }
+
 void Boid::cohesion(const std::vector<Boid>& boids)
 {
     glm::vec2 avgPos(0, 0);
@@ -63,14 +76,13 @@ void Boid::cohesion(const std::vector<Boid>& boids)
     if (count > 0)
     {
         avgPos /= count;
-        velocity += (avgPos - position) * static_cast<float>(cohesionFactor) / static_cast<float>(200);
+        velocity += (avgPos - position) * cohesionFactor / static_cast<float>(200);
     }
 }
 
-// TODO(tanya): Bof à revoir
 void Boid::limitSpeed()
 {
-    float speed = glm::length(velocity);
+    const float speed = glm::length(velocity);
     std::cout << "speed " << speed << "\n";
 
     if (speed > maxSpeed)

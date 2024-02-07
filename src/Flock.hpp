@@ -1,33 +1,17 @@
 #pragma once
+#include <cassert>
 #include <vector>
 #include "Boid.hpp"
 
 class Flock {
-    /*
-    - liste de boids
-    - construction modérée de boids (1 seul boid?)
-    - constructions massive de boids ?
-    - destruction de boids
-
-------- caractéristique pour une famille -----
-    - Séparation
-    - Alignement
-    - Cohésion
-    */
 private:
     std::vector<Boid> boids;
 
 public:
     explicit Flock(const unsigned int number)
-    {
-        for (unsigned int i = 0; i < number; i++)
-            boids.emplace_back(Boid());
-    }
+        : boids(number) {}
 
-    std::vector<Boid> getBoids() const
-    {
-        return boids;
-    }
+    std::vector<Boid> getBoids() const { return boids; }
 
     void move()
     {
@@ -38,18 +22,24 @@ public:
     }
 
 private:
-    void addBoid()
-    {
-    }
+    void addBoid() { boids.emplace_back(Boid()); }
+    void deleteBoid() { boids.pop_back(); }
 
-    void deleteBoid()
-    {}
-
-    void populateFlock(const unsigned int numberOfBoid)
+    void populateFlock(const unsigned int number)
     {
-        for (unsigned int i = 0; i < numberOfBoid; i++)
+        assert(number > 0);
+        for (unsigned int i = 0; i < number; i++)
         {
             addBoid();
+        }
+    }
+
+    void deleteBoids(const unsigned int number)
+    {
+        assert(number > 0);
+        for (unsigned int i = 0; i < number; i++)
+        {
+            deleteBoid();
         }
     }
 };

@@ -16,35 +16,17 @@ int main()
     auto ctx = p6::Context{{.title = "Projet_MPS"}};
     ctx.maximize_window();
 
-    Flock f(10);
+    Flock f(30);
 
     // Declare your infinite update loop.
     ctx.update = [&]() {
         ctx.background(p6::NamedColor::Blue);
-        ctx.circle(
-            p6::Center{ctx.mouse()},
-            p6::Radius{0.2f}
-        );
-        ctx.circle(
-            p6::Center{glm::vec2(1, 1)},
-            p6::Radius{0.05f}
-        );
-        ctx.circle(
-            p6::Center{glm::vec2(0, 0)},
-            p6::Radius{0.05f}
-        );
-        ctx.circle(
-            p6::Center{glm::vec2(1.5, 1)},
-            p6::Radius{0.05f}
-        );
 
-        std::vector<Boid>
-            t = f.getBoids();
-        for (auto& b : t) // access by reference to avoid copying
+        for (auto& b : f.getBoids()) // access by reference to avoid copying
         {
             ctx.circle(
                 p6::Center{b.getPos()},
-                p6::Radius{0.05f}
+                p6::Radius{0.025f}
             );
         }
         f.move();
