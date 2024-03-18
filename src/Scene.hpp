@@ -1,4 +1,4 @@
-#include "Flock.hpp"
+#include "./Boids/Flock.hpp"
 #include "p6/p6.h"
 class Scene {
     /*

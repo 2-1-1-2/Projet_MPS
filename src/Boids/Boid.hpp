@@ -1,6 +1,6 @@
 #include <cstdlib>
 #include <vector>
-#include "Math.hpp"
+#include "../Probas/Math.hpp"
 #include "glm/fwd.hpp"
 #include "glm/glm.hpp"
 class Boid {
