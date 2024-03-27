@@ -14,5 +14,6 @@ int main()
 
     Scene scene(30);
     scene.update();
+    scene.controls();
     scene.start();
 }
