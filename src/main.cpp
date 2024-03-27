@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <cstdlib>
 #include "glm/fwd.hpp"
 #define DOCTEST_CONFIG_IMPLEMENT
@@ -7,7 +8,7 @@
 
 int main()
 {
-    std::srand(time(0));
+    std::srand(time(NULL));
     // Run the tests
     if (doctest::Context{}.run() != 0)
         return EXIT_FAILURE;

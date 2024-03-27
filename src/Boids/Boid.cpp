@@ -6,18 +6,18 @@
 static constexpr float maxSpeed = 0.006;
 static constexpr float minSpeed = 0.003;
 
-Boid::Boid(glm::vec2 p, glm::vec2 v, float avf, float alf, float cof)
+Boid::Boid(glm::vec3 p, glm::vec3 v, float avf, float alf, float cof)
     : avoidFactor(avf), alignmentFactor(alf), cohesionFactor(cof), position(p), velocity(v)
 {
-    position *= glm::vec2(Math::randomSign(), Math::randomSign());
+    position *= glm::vec3(Math::randomSign(), Math::randomSign(), Math::randomSign());
     velocity /= 100;
 
-    velocity *= glm::vec2(Math::randomSign(), Math::randomSign());
+    velocity *= glm::vec3(Math::randomSign(), Math::randomSign(), Math::randomSign());
 };
 
 void Boid::avoid(const std::vector<Boid>& boids)
 {
-    glm::vec2 close(0, 0);
+    glm::vec3 close(0, 0, 0);
 
     for (const Boid& other : boids)
     {
@@ -34,7 +34,7 @@ void Boid::avoid(const std::vector<Boid>& boids)
 }
 void Boid::alignment(const std::vector<Boid>& boids)
 {
-    glm::vec2 avgVel(0, 0);
+    glm::vec3 avgVel(0, 0, 0);
     int       count = 0;
 
     for (const Boid& other : boids)
@@ -58,7 +58,7 @@ void Boid::alignment(const std::vector<Boid>& boids)
 
 void Boid::cohesion(const std::vector<Boid>& boids)
 {
-    glm::vec2 avgPos(0, 0);
+    glm::vec3 avgPos(0, 0, 0);
     int       count = 0;
 
     for (const Boid& other : boids)

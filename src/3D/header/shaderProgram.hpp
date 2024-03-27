@@ -39,6 +39,11 @@ public:
         m_Program.use();
     }
 
+    virtual void transform(glm::mat4 ProjMatrix, const glm::mat4 MVMatrix, const glm::mat4 camMatrix, float time)
+    {
+        std::cout << "transform oups\n";
+    }
+
     void uniformText()
     {
         for (int i = 0; i < uTextures.size(); i++)
@@ -103,7 +108,7 @@ public:
         std::cout << "dans addTextures avec s\n";
     }
 
-    void transform(glm::mat4 ProjMatrix, const glm::mat4 MVMatrix, const glm::mat4 camMatrix, float time)
+    void transform(glm::mat4 ProjMatrix, const glm::mat4 MVMatrix, const glm::mat4 camMatrix, float time) override
     {
         glm::vec3 dir       = {1.f, 1.f, 1.f};
         glm::mat4 rot       = glm::rotate(camMatrix, time, {0.f, 5.f, 0.f});
