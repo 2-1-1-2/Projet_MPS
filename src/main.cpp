@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include "glm/fwd.hpp"
 #define DOCTEST_CONFIG_IMPLEMENT
-#include "Scene.hpp"
+#include "Scene/Scene.hpp"
 #include "doctest/doctest.h"
 #include "p6/p6.h"
 
