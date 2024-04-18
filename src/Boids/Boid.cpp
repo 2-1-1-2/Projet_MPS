@@ -83,7 +83,7 @@ void Boid::cohesion(const std::vector<Boid>& boids)
 void Boid::limitSpeed()
 {
     const float speed = glm::length(velocity);
-    std::cout << "speed " << speed << "\n";
+    // std::cout << "speed " << speed << "\n";
 
     if (speed > maxSpeed)
     {

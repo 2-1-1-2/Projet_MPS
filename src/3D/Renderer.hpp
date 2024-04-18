@@ -4,6 +4,7 @@
 #include <vector>
 #include "../Probas/Math.hpp"
 #include "3D/common/TrackballCamera.hpp"
+#include "3D/common/glimac/box_vertices.hpp"
 #include "3D/common/glimac/common.hpp"
 #include "3D/common/glimac/sphere_vertices.hpp"
 #include "Renderer.hpp"
@@ -16,6 +17,7 @@
 #include "header/helper.hpp"
 #include "header/shaderProgram.hpp"
 #include "p6/p6.h"
+
 
 class Renderer {
 protected:
