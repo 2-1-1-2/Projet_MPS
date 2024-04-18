@@ -1,4 +1,4 @@
-#include "box_vertices.hpp"
+#include "BoxVertices.hpp"
 #include <vector>
 
 namespace glimac {

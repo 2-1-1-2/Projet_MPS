@@ -2,7 +2,7 @@
 #include <filesystem>
 #include <type_traits>
 #include <utility>
-#include "3D/common/glimac/common.hpp"
+#include "Shapes/common.hpp"
 #include "glm/fwd.hpp"
 #include "glm/glm.hpp"
 #include "p6/p6.h"

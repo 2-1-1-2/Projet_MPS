@@ -1,9 +1,11 @@
+#pragma once
 #include <cstdlib>
 #include <vector>
-#include "../Probas/Math.hpp"
-#include "3D/Renderer.hpp"
+#include "Maths/Math.hpp"
+#include "Renderer/Renderer.hpp"
 #include "glm/fwd.hpp"
 #include "glm/glm.hpp"
+
 class Boid {
 private:
     float                  avoidFactor;

@@ -1,7 +1,8 @@
+#pragma once
 #include <vector>
-#include "./3D/Renderer.hpp"
-#include "./Boids/Flock.hpp"
-#include "3D/common/TrackballCamera.hpp"
+#include "Boids/Flock.hpp"
+#include "Cameras/TrackballCamera.hpp"
+#include "Renderer/Renderer.hpp"
 #include "glm/fwd.hpp"
 #include "p6/p6.h"
 
@@ -20,9 +21,9 @@ private:
     TrackballCamera    camera;
 
     // Renderers
-    Renderer rPlayer       = Renderer(&ctx, new LightProgram("../src/3D/shaders/3D.vs.glsl", "../src/3D/shaders/pointLight.fs.glsl"));
-    Renderer rBoundaryCube = Renderer(&ctx, new LightProgram("../src/3D/shaders/3D.vs.glsl", "../src/3D/shaders/pointLight.fs.glsl"));
-    Renderer rBoids        = Renderer(&ctx, new LightProgram("../src/3D/shaders/3D.vs.glsl", "../src/3D/shaders/pointLight.fs.glsl"));
+    Renderer rPlayer       = Renderer(&ctx, new LightProgram("../src/Renderer/Shaders/3D.vs.glsl", "../src/Renderer/Shaders/pointLight.fs.glsl"));
+    Renderer rBoundaryCube = Renderer(&ctx, new LightProgram("../src/Renderer/Shaders/3D.vs.glsl", "../src/Renderer/Shaders/pointLight.fs.glsl"));
+    Renderer rBoids        = Renderer(&ctx, new LightProgram("../src/Renderer/Shaders/3D.vs.glsl", "../src/Renderer/Shaders/pointLight.fs.glsl"));
 
     // std::vector<glimac::ShapeVertex> cube_vertices(float size)
     // {
@@ -130,10 +131,10 @@ public:
         rPlayer.setVertices(vtxCharacter);
         rBoundaryCube.setVertices(vtxBoundaryCube);
 
-        // for (unsigned int i = 0; i < nb_flocks; i++)
-        // {
-        //     flocks.push_back(Flock(nb_boids));
-        // }
+        for (unsigned int i = 0; i < nb_flocks; i++)
+        {
+            flocks.push_back(Flock(nb_boids));
+        }
     }
 
     void update()
@@ -152,7 +153,7 @@ public:
             rBoundaryCube.draw(camera);
 
             rPlayer.setMVMatrix(mvMatrix);
-            // rPlayer.draw(camera);
+            rPlayer.draw(camera);
 
             for (auto& flock : flocks)
                 flock.move();

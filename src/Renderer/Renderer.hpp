@@ -2,22 +2,21 @@
 #include <cstdlib>
 #include <iostream>
 #include <vector>
-#include "../Probas/Math.hpp"
-#include "3D/common/TrackballCamera.hpp"
-#include "3D/common/glimac/box_vertices.hpp"
-#include "3D/common/glimac/common.hpp"
-#include "3D/common/glimac/sphere_vertices.hpp"
-#include "Renderer.hpp"
+#include "Maths/Math.hpp"
+// #include "Renderer.hpp"
+#include "Additional/Helper.hpp"
+#include "Cameras/TrackballCamera.hpp"
+#include "ShaderProgram.hpp"
+#include "Shapes/BoxVertices.hpp"
+#include "Shapes/Common.hpp"
+#include "Shapes/SphereVertices.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/fwd.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/random.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include "header/helper.hpp"
-#include "header/shaderProgram.hpp"
 #include "p6/p6.h"
-
 
 class Renderer {
 protected:

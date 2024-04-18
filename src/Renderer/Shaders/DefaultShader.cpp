@@ -1,4 +1,4 @@
-#include "default_shader.hpp"
+#include "DefaultShader.hpp"
 #include "glad/gl.h"
 
 namespace glimac {

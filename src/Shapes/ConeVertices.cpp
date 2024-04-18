@@ -1,8 +1,8 @@
-#include "cone_vertices.hpp"
+#include "ConeVertices.hpp"
 #include <cmath>
 #include <glm/gtc/constants.hpp>
 #include <vector>
-#include "common.hpp"
+#include "Common.hpp"
 
 namespace glimac {
 
