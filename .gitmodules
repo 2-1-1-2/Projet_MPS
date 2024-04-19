@@ -1,0 +1,6 @@
+[submodule "lib/tinyobjloader"]
+	path = lib/tinyobjloader
+	url = https://github.com/tinyobjloader/tinyobjloader.git
+[submodule "lib/p6"]
+	path = lib/p6
+	url = https://github.com/JulesFouchy/p6
