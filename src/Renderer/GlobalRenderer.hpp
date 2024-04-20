@@ -26,9 +26,10 @@ private:
 public:
     explicit GlobalRenderer(p6::Context* ctx, TrackballCamera* camera);
 
-    // void        addObject(Object3D _objects);
-    // void        clearAllObjects();
     void        drawObject(const glm::mat4& modelMatrix, const Object3D& object) const;
+    void        clearAll();
     static void initializeUIElements();
-    void        close();
+    // void        addObject(Object3D& _objects);
+    // void        clearObjects();
+    // void        close();
 };

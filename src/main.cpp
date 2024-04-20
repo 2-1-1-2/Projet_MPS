@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include "glm/fwd.hpp"
 #define DOCTEST_CONFIG_IMPLEMENT
-#include "Scene/Scene.hpp"
+#include "App/App.hpp"
 #include "doctest/doctest.h"
 #include "p6/p6.h"
 
@@ -13,7 +13,8 @@ int main()
     if (doctest::Context{}.run() != 0)
         return EXIT_FAILURE;
 
-    Scene scene(10, 3);
-    scene.update();
-    scene.start();
+    App App(10, 3);
+    App.update();
+    App.start();
+    App.stop();
 }

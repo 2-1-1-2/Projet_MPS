@@ -9,8 +9,8 @@ private:
     void        loadTexture(); // Method to load texture from the file
 
 public:
-    // Constructor initializes texture with the name of the image file
-    Texture(const std::string& name);
+    // Constructor initializes texture with the name of the image file, default to the cube
+    explicit Texture(const std::string& name);
 
     // Returns the OpenGL texture ID
     GLuint getTextureID() const { return _textureID; }

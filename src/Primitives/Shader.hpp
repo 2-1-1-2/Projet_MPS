@@ -18,6 +18,6 @@ public:
     GLint uLightPos_vs;
     GLint uLightIntensity;
 
-    // Constructor initializes shader with paths to vertex and fragment shader source files
-    Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
+    // Constructor initializes shader with paths to vertex and fragment shader source files, default to basic shaders
+    explicit Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
 };

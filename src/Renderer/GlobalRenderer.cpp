@@ -2,7 +2,7 @@
 
 float     GlobalRenderer::_uKd             = 1.f;
 float     GlobalRenderer::_uKs             = 3.f;
-float     GlobalRenderer::_uLightIntensity = 0.36f;
+float     GlobalRenderer::_uLightIntensity = 0.5f;
 float     GlobalRenderer::_uShininess      = 4.f;
 glm::vec3 GlobalRenderer::_lightDir{0.5f, 0.5f, 0.5f};
 
@@ -13,23 +13,6 @@ GlobalRenderer::GlobalRenderer(p6::Context* ctx, TrackballCamera* camera)
     glEnable(GL_DEPTH_TEST);
     glCullFace(GL_BACK);
 };
-
-// void GlobalRenderer::addObject(Object3D object)
-// {
-//     _objects.emplace_back(object);
-// }
-
-// void GlobalRenderer::clearAllObjects()
-// {
-//     for (int i = 0; i < 16; i++)
-//     {
-//         glActiveTexture(GL_TEXTURE0 + i);
-//         glBindTexture(GL_TEXTURE_2D, 0);
-//     }
-//     glBindVertexArray(0);
-//     _ctx->background({});
-//     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-// }
 
 void GlobalRenderer::drawObject(const glm::mat4& modelMatrix, const Object3D& object) const
 {
@@ -64,6 +47,15 @@ void GlobalRenderer::drawObject(const glm::mat4& modelMatrix, const Object3D& ob
     glDrawArrays(GL_TRIANGLES, 0, object.getMesh().size());
 };
 
+void GlobalRenderer::clearAll()
+{
+    glBindVertexArray(0);            // Ensure no VAO is bound
+    glActiveTexture(GL_TEXTURE0);    // Active the default texture unit
+    glBindTexture(GL_TEXTURE_2D, 0); // Unbind any 2D textures from the default unit
+    _ctx->background({});
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
+}
+
 void GlobalRenderer::initializeUIElements()
 {
     ImGui::SliderFloat("Diffuse Reflection", &_uKd, 0.f, 10.f);
@@ -75,10 +67,21 @@ void GlobalRenderer::initializeUIElements()
     ImGui::SliderFloat("Light Direction Z", &_lightDir.z, -1.f, 1.f);
 };
 
-void GlobalRenderer::close()
-{
-    for (Object3D& object : _objects)
-    {
-        object.clear();
-    }
-}
+// void GlobalRenderer::addObject(Object3D& object)
+// {
+//     _objects.emplace_back(object);
+// }
+
+// void GlobalRenderer::clearObjects()
+// {
+//     for (Object3D& object : _objects)
+//     {
+//         std::cout << "j'ai clear un objet lol" << std::endl;
+//         object.clear();
+//     }
+// }
+
+// void GlobalRenderer::close()
+// {
+//     clearObjects();
+// }
