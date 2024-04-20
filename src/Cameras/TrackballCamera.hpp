@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <iostream>
 
 class TrackballCamera {
 private:
@@ -15,4 +16,6 @@ public:
     void      rotateLeft(float degrees);
     void      rotateUp(float degrees);
     glm::mat4 getViewMatrix() const;
+    float     getDistance() const { return m_Distance; };
+    void      printProperties() { std::cout << "m_Distance: " << m_Distance << ", m_AngleX: " << m_AngleX << ", m_AngleY: " << m_AngleY << "." << std::endl; };
 };

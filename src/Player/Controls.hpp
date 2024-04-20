@@ -14,6 +14,14 @@ private:
     p6::Context*     _ctx;
     TrackballCamera* _camera;
 
+    /// TODO: à mettre dans le GUI
+    float _scrollSensitivity = .2f;
+    float _mouseSensitivity  = 90.f;
+
+    /// TODO: à mettre dans le GUI
+    float _minSrcollDistance = .5f;
+    float _maxScrollDistance = 5.f;
+
 public:
     Controls(p6::Context* ctx, TrackballCamera* camera);
 

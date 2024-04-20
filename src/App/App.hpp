@@ -11,9 +11,11 @@
 #include "p6/p6.h"
 
 struct Scene {
-    float    sceneSize = 10.f;
-    Object3D boundingCube{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
-    Object3D environment{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
+    const float cubeBaseSize = 10.f;
+    float       size         = 100.f;
+    float       groundLevel  = 5.f;
+    Object3D    boundingCube{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
+    Object3D    environment{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
 };
 
 class App {
@@ -43,9 +45,10 @@ private:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);
 
-        Transform boundingCubeTransform{{0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, _scene.sceneSize};
+        Transform boundingCubeTransform{{0.f, (_scene.size / 2) - _scene.groundLevel, 0.f}, {0.f, 0.f, 0.f}, _scene.size / _scene.cubeBaseSize};
         _renderer.drawObject(boundingCubeTransform.getTransform(), _scene.boundingCube);
-        Transform ghostTransform{{0.f, 0.f, 0.f}, {0.f, 45.f, 45.f}, .3f};
+
+        Transform ghostTransform{{0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, .3f};
         _renderer.drawObject(ghostTransform.getTransform(), _player.getObject3D());
 
         renderFlock();

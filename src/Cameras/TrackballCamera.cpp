@@ -2,7 +2,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 TrackballCamera::TrackballCamera()
-    : m_Distance(5.0f), m_AngleX(0.0f), m_AngleY(0.0f) {}
+    : m_Distance(3.f), m_AngleX(0.0f), m_AngleY(0.0f) {}
 
 void TrackballCamera::moveFront(float delta)
 {

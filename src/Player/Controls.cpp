@@ -6,26 +6,23 @@ Controls::Controls(p6::Context* ctx, TrackballCamera* camera)
 void Controls::handleCameraZoom()
 {
     _ctx->mouse_scrolled = [&](p6::MouseScroll scroll) {
-        if (scroll.dy > 0)
+        if (scroll.dy > 0 && (_camera->getDistance() - _scrollSensitivity >= _minSrcollDistance))
         {
-            _camera->moveFront(4.8f);
+            _camera->moveFront(_scrollSensitivity);
         }
-        else if (scroll.dy < 0)
+        else if (scroll.dy < 0 && (_camera->getDistance() + _scrollSensitivity <= _maxScrollDistance))
         {
-            _camera->moveFront(-4.8f);
+            _camera->moveFront(-_scrollSensitivity);
         }
-        std::cout << "salut c moi je scroll" << std::endl;
     };
 };
 
 void Controls::handleCameraRotation()
 {
-    std::cout << "allo la police" << std::endl;
     _ctx->mouse_dragged = [&](p6::MouseDrag mouse_drag) {
         if (ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
             return;
-        std::cout << "oui c moi je rotate" << std::endl;
-        _camera->rotateLeft(-mouse_drag.delta.x * 90.f);
-        _camera->rotateUp(mouse_drag.delta.y * 90.f);
+        _camera->rotateLeft(-mouse_drag.delta.x * _mouseSensitivity);
+        _camera->rotateUp(mouse_drag.delta.y * _mouseSensitivity);
     };
 }
