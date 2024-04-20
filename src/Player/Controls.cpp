@@ -1,7 +1,7 @@
 #include "Controls.hpp"
 
-Controls::Controls(p6::Context* ctx, TrackballCamera* camera)
-    : _ctx(ctx), _camera(camera){};
+Controls::Controls(p6::Context* ctx, TrackballCamera* camera, float* mapSize)
+    : _ctx(ctx), _camera(camera), _mapSize(mapSize){};
 
 void Controls::handleCameraZoom()
 {
@@ -50,7 +50,11 @@ void Controls::handlePlayerMovements(glm::vec3& playerPosition)
 
     if (glm::length(newDirection) > 0)
     { // Only update if there has been movement
-        _lastDirection = glm::normalize(newDirection);
-        playerPosition += _lastDirection * _movementSpeed;
+        _lastDirection                 = glm::normalize(newDirection);
+        glm::vec3   newPosition        = playerPosition + _lastDirection * _movementSpeed;
+        const float halfSizeWithMargin = ((*_mapSize / 2) - _margin);
+        newPosition.x                  = std::clamp(newPosition.x, -halfSizeWithMargin, halfSizeWithMargin);
+        newPosition.z                  = std::clamp(newPosition.z, -halfSizeWithMargin, halfSizeWithMargin);
+        playerPosition                 = newPosition;
     }
 }

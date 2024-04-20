@@ -16,7 +16,7 @@ private:
     Object3D _object3D{"Ghost", "3D.vs.glsl", "tex3D.fs.glsl"};
 
 public:
-    Player(p6::Context* ctx, TrackballCamera* camera);
+    Player(p6::Context* ctx, TrackballCamera* camera, float* mapSize);
 
     void       handleControls();
     void       handleMovements();

@@ -17,6 +17,9 @@ private:
     TrackballCamera* _camera;
     glm::vec3        _lastDirection = glm::vec3(0);
 
+    float* _mapSize;
+    float  _margin = .5f;
+
     /// TODO: à mettre dans le GUI
     float _scrollSensitivity = .2f;
     float _mouseSensitivity  = 90.f;
@@ -29,7 +32,7 @@ private:
     float _movementSpeed = .1f;
 
 public:
-    Controls(p6::Context* ctx, TrackballCamera* camera);
+    Controls(p6::Context* ctx, TrackballCamera* camera, float* mapSize);
 
     void      handleCameraZoom();
     void      handleCameraRotation();

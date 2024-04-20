@@ -11,11 +11,11 @@
 #include "p6/p6.h"
 
 struct Scene {
-    const float cubeBaseSize = 10.f;
-    float       size         = 100.f;
-    float       groundLevel  = 5.f;
-    Object3D    boundingCube{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
-    Object3D    environment{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
+    float    cubeBaseSize = 10.f; // for reference only, do not touch
+    float    size         = 20.f;
+    float    groundLevel  = 5.f;
+    Object3D boundingCube{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
+    Object3D environment{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
 };
 
 class App {
@@ -76,7 +76,7 @@ private:
 
 public:
     explicit App(unsigned int nb_boids, unsigned int nb_flocks)
-        : _renderer(&_ctx, &_camera), _player(&_ctx, &_camera), _camera(&_player.getPosition())
+        : _renderer(&_ctx, &_camera), _player(&_ctx, &_camera, &_scene.size), _camera(&_player.getPosition())
     {
         _ctx.maximize_window();
 
