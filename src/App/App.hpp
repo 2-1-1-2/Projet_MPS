@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include "../../lib/p6/src/Context.h"
+#include "../../lib/p6/src/internal/Time/Clock_Realtime.h"
 #include "Boids/Flock.hpp"
 #include "Cameras/TrackballCamera.hpp"
 #include "Player/Player.hpp"
@@ -50,6 +52,8 @@ private:
         Transform boundingCubeTransform{{0.f, (_scene.size / 2) - _scene.groundLevel, 0.f}, {0.f, 0.f, 0.f}, _scene.size / _scene.cubeBaseSize};
         _renderer.drawObject(boundingCubeTransform.getTransform(), _scene.boundingCube);
 
+        // float     hoverDelta = _hoverAmplitude * sin(_hoverFrequency * _hoverTime);
+        _player.animatePlayer();
         Transform ghostTransform{_player.getPosition(), {0.f, -_player.getLastOrientation() + 180, 0.f}, .3f};
         _renderer.drawObject(ghostTransform.getTransform(), _player.getObject3D());
 

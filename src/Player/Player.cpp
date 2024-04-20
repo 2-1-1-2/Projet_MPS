@@ -15,3 +15,10 @@ void Player::handleMovements()
 {
     _controls.handlePlayerMovements(_position);
 }
+
+void Player::animatePlayer()
+{
+    _hoverTime += _ctx->delta_time();
+    float hoverDelta = _hoverAmplitude * sin(_hoverFrequency * _hoverTime);
+    _position.y      = 0 + hoverDelta;
+}

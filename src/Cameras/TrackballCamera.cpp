@@ -26,6 +26,9 @@ glm::mat4 TrackballCamera::getViewMatrix() const
     viewMatrix           = glm::rotate(viewMatrix, glm::radians(m_AngleX), glm::vec3(1.0f, 0.0f, 0.0f));
     viewMatrix           = glm::rotate(viewMatrix, glm::radians(m_AngleY), glm::vec3(0.0f, 1.0f, 0.0f));
     if (m_Target)
-        viewMatrix = glm::translate(viewMatrix, -*m_Target);
+    {
+        glm::vec3 positionToFollow{m_Target->x, 0.f, m_Target->z};
+        viewMatrix = glm::translate(viewMatrix, -positionToFollow);
+    }
     return viewMatrix;
 }
