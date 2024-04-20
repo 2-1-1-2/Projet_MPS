@@ -11,11 +11,11 @@
 #include "glm/matrix.hpp"
 #include "p6/p6.h"
 
-
 class Controls {
 private:
     p6::Context*     _ctx;
     TrackballCamera* _camera;
+    glm::vec3        _lastDirection = glm::vec3(0);
 
     /// TODO: à mettre dans le GUI
     float _scrollSensitivity = .2f;
@@ -31,7 +31,8 @@ private:
 public:
     Controls(p6::Context* ctx, TrackballCamera* camera);
 
-    void handleCameraZoom();
-    void handleCameraRotation();
-    void handlePlayerMovements(glm::vec3& playerPosition);
+    void      handleCameraZoom();
+    void      handleCameraRotation();
+    void      handlePlayerMovements(glm::vec3& playerPosition);
+    glm::vec3 getLastDirection() { return _lastDirection; };
 };

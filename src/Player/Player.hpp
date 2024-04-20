@@ -22,5 +22,6 @@ public:
     void       handleMovements();
     Object3D&  getObject3D() { return _object3D; };
     glm::vec3& getPosition() { return _position; };
+    float      getLastOrientation() { return glm::degrees(atan2(_controls.getLastDirection().z, _controls.getLastDirection().x)) + 90.0f; };
     void       setPosition(const glm::vec3& position) { _position = position; };
 };

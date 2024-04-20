@@ -29,33 +29,28 @@ void Controls::handleCameraRotation()
 
 void Controls::handlePlayerMovements(glm::vec3& playerPosition)
 {
-    glm::vec3 forward = glm::vec3(
-        sin(glm::radians(_camera->getAngleY())), // Horizontal angle in radians
-        0,                                       // No vertical movement in Y-axis
-        -cos(glm::radians(_camera->getAngleY())) // Horizontal angle in radians
-    );
-
-    glm::vec3 right = glm::vec3(
-        cos(glm::radians(_camera->getAngleY())), // Perpendicular to forward vector
-        0,
-        sin(glm::radians(_camera->getAngleY()))
-    );
+    glm::vec3 newDirection = glm::vec3(0);
 
     if (_ctx->key_is_pressed(GLFW_KEY_W))
     {
-        playerPosition += forward * _movementSpeed; // Move forward
+        newDirection += glm::vec3(sin(glm::radians(_camera->getAngleY())), 0, -cos(glm::radians(_camera->getAngleY())));
     }
     if (_ctx->key_is_pressed(GLFW_KEY_S))
     {
-        playerPosition -= forward * _movementSpeed; // Move backward
+        newDirection -= glm::vec3(sin(glm::radians(_camera->getAngleY())), 0, -cos(glm::radians(_camera->getAngleY())));
     }
     if (_ctx->key_is_pressed(GLFW_KEY_A))
     {
-        playerPosition -= right * _movementSpeed; // Move left
+        newDirection -= glm::vec3(cos(glm::radians(_camera->getAngleY())), 0, sin(glm::radians(_camera->getAngleY())));
     }
     if (_ctx->key_is_pressed(GLFW_KEY_D))
     {
-        playerPosition += right * _movementSpeed; // Move right
+        newDirection += glm::vec3(cos(glm::radians(_camera->getAngleY())), 0, sin(glm::radians(_camera->getAngleY())));
     }
-    // _camera->setTarget(playerPosition); // Update camera to follow the player
+
+    if (glm::length(newDirection) > 0)
+    { // Only update if there has been movement
+        _lastDirection = glm::normalize(newDirection);
+        playerPosition += _lastDirection * _movementSpeed;
+    }
 }
