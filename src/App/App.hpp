@@ -34,6 +34,8 @@ private:
     {
         for (auto& flock : _flocks)
             flock.move();
+
+        _player.handleMovements();
     }
 
     void render()
@@ -48,7 +50,7 @@ private:
         Transform boundingCubeTransform{{0.f, (_scene.size / 2) - _scene.groundLevel, 0.f}, {0.f, 0.f, 0.f}, _scene.size / _scene.cubeBaseSize};
         _renderer.drawObject(boundingCubeTransform.getTransform(), _scene.boundingCube);
 
-        Transform ghostTransform{{0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, .3f};
+        Transform ghostTransform{_player.getPosition(), {0.f, 180.f, 0.f}, .3f};
         _renderer.drawObject(ghostTransform.getTransform(), _player.getObject3D());
 
         renderFlock();

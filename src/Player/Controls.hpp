@@ -27,4 +27,5 @@ public:
 
     void handleCameraZoom();
     void handleCameraRotation();
+    void handlePlayerMovements(glm::vec3& playerPosition);
 };
