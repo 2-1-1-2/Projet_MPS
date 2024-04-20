@@ -48,7 +48,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE  p6::p6)
 add_subdirectory(lib/tinyobjloader)
 target_link_libraries(${PROJECT_NAME} PRIVATE tinyobjloader)
 
-# ---Copy content of assets file after building the project---
+# [PROD] ---Copy the content of assets file---
+# file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
+
+# [DEV] ---Copy content of assets file after building the project---
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
