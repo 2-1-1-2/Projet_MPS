@@ -76,7 +76,7 @@ private:
 
 public:
     explicit App(unsigned int nb_boids, unsigned int nb_flocks)
-        : _renderer(&_ctx, &_camera), _player(&_ctx, &_camera)
+        : _renderer(&_ctx, &_camera), _player(&_ctx, &_camera), _camera(&_player.getPosition())
     {
         _ctx.maximize_window();
 

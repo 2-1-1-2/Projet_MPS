@@ -1,8 +1,8 @@
 #include "TrackballCamera.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
-TrackballCamera::TrackballCamera()
-    : m_Distance(3.f), m_AngleX(0.0f), m_AngleY(0.0f) {}
+TrackballCamera::TrackballCamera(glm::vec3* target)
+    : m_Target(target), m_Distance(3.f), m_AngleX(0.0f), m_AngleY(0.0f) {}
 
 void TrackballCamera::moveFront(float delta)
 {
@@ -25,5 +25,7 @@ glm::mat4 TrackballCamera::getViewMatrix() const
     viewMatrix           = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -m_Distance));
     viewMatrix           = glm::rotate(viewMatrix, glm::radians(m_AngleX), glm::vec3(1.0f, 0.0f, 0.0f));
     viewMatrix           = glm::rotate(viewMatrix, glm::radians(m_AngleY), glm::vec3(0.0f, 1.0f, 0.0f));
+    if (m_Target)
+        viewMatrix = glm::translate(viewMatrix, -*m_Target);
     return viewMatrix;
 }
