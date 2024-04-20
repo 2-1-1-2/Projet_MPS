@@ -13,8 +13,7 @@ int main()
     if (doctest::Context{}.run() != 0)
         return EXIT_FAILURE;
 
-    Scene scene(30, 3);
+    Scene scene(10, 3);
     scene.update();
-    scene.controls();
     scene.start();
 }

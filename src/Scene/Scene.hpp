@@ -2,7 +2,11 @@
 #include <vector>
 #include "Boids/Flock.hpp"
 #include "Cameras/TrackballCamera.hpp"
-#include "Renderer/Renderer.hpp"
+#include "Player/Player.hpp"
+#include "Primitives/Model.hpp"
+#include "Primitives/Object3D.hpp"
+#include "Primitives/Transform.hpp"
+#include "Renderer/GlobalRenderer.hpp"
 #include "glm/fwd.hpp"
 #include "p6/p6.h"
 
@@ -13,98 +17,79 @@ class Scene {
     */
 
 private:
-    int sceneSize = 10.f;
+    int _sceneSize = 10.f;
 
-    p6::Context ctx = p6::Context{{.title = "Projet_MPS"}}; // plutôt à mettre dans le main et à passer en parametre ?
+    p6::Context _ctx = p6::Context{{.title = "Projet_MPS"}}; // plutôt à mettre dans le main et à passer en parametre ?
 
-    std::vector<Flock> flocks;
-    TrackballCamera    camera;
+    std::vector<Flock> _flocks;
+    TrackballCamera    _camera;
+    GlobalRenderer     _renderer;
+    Player             _player;
 
-    // Renderers
-    Renderer rPlayer       = Renderer(&ctx, new LightProgram("../src/Renderer/Shaders/3D.vs.glsl", "../src/Renderer/Shaders/pointLight.fs.glsl"));
-    Renderer rBoundaryCube = Renderer(&ctx, new LightProgram("../src/Renderer/Shaders/3D.vs.glsl", "../src/Renderer/Shaders/pointLight.fs.glsl"));
-    Renderer rBoids        = Renderer(&ctx, new LightProgram("../src/Renderer/Shaders/3D.vs.glsl", "../src/Renderer/Shaders/pointLight.fs.glsl"));
+    // Create the 3D objects, load the .obj files, textures and shaders
+    Object3D boundingCube{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
+    Object3D ghost{"Ghost", "3D.vs.glsl", "tex3D.fs.glsl"};
 
 public:
-    explicit Scene(int nb_boids, int nb_flocks)
-
+    explicit Scene(unsigned int nb_boids, unsigned int nb_flocks)
+        : _renderer(&_ctx, &_camera), _player(&_ctx, &_camera)
     {
-        ctx.maximize_window();
-        rBoundaryCube.setup();
-        rPlayer.setup();
-        rBoids.setup();
+        _ctx.maximize_window();
 
-        /// TODO: Faire un cube
-        // setupBoundaryCube();
-
-        std::vector<glimac::ShapeVertex> vtxCharacter    = glimac::sphere_vertices(1.f, 32, 16);
-        std::vector<glimac::ShapeVertex> vtxBoundaryCube = glimac::box_vertices(5.f, 10.f, 7.f);
-
-        rPlayer.setVertices(vtxCharacter);
-        rBoundaryCube.setVertices(vtxBoundaryCube);
-
+        // Instantiate flock
         for (unsigned int i = 0; i < nb_flocks; i++)
         {
-            flocks.push_back(Flock(nb_boids));
+            _flocks.push_back(Flock(nb_boids));
         }
+
+        _player.handleControls();
     }
 
     void update()
     {
-        ctx.update = [&]() {
-            ctx.background(p6::NamedColor::Blue);
-            const glm::mat4 globalMVMatrix = camera.getViewMatrix();
+        _ctx.update = [&]() {
+            _ctx.background(p6::NamedColor::Blue);
+            const glm::mat4 globalMVMatrix = _camera.getViewMatrix();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             glEnable(GL_DEPTH_TEST);
 
-            glm::mat4 mvMatrix =
-                glm::rotate(globalMVMatrix, ctx.time(), {0.f, 5.f, 0.f});
+            // glm::mat4 mvMatrix =
+            //     glm::rotate(globalMVMatrix, ctx.time(), {0.f, 5.f, 0.f});
 
-            rBoundaryCube.setMVMatrix(mvMatrix);
-            rBoundaryCube.draw(camera);
+            Transform boundingCubeTransform{{0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, 10.f};
+            _renderer.drawObject(boundingCubeTransform.getTransform(), boundingCube);
+            Transform ghostTransform{{0.f, 0.f, 0.f}, {0.f, 45.f, 45.f}, .3f};
+            _renderer.drawObject(ghostTransform.getTransform(), ghost);
 
-            rPlayer.setMVMatrix(mvMatrix);
-            rPlayer.draw(camera);
-
-            for (auto& flock : flocks)
+            for (auto& flock : _flocks)
                 flock.move();
-            renderFlock(globalMVMatrix, camera);
+            renderFlock(globalMVMatrix);
         };
+
+        _renderer.close();
     }
 
-    void controls()
+    void renderFlock(const glm::mat4 globalMVMatrix)
     {
-        ctx.mouse_moved = [&](p6::MouseMove mouseMove) {
-            /// TODO: ajouter la sensi au GUI
-            const float sensitivity = 150.f;
-            camera.rotateLeft(mouseMove.delta.x * sensitivity);
-            camera.rotateUp(-mouseMove.delta.y * sensitivity); // invert Y for a more intuitive rotation
-        };
-
-        ctx.mouse_scrolled = [&](p6::MouseScroll mouseScroll) {
-            camera.moveFront(mouseScroll.dy);
-        };
-    }
-
-    void renderFlock(const glm::mat4 globalMVMatrix, TrackballCamera camera)
-    {
-        for (auto& flock : flocks)
+        for (auto& flock : _flocks)
         {
             for (auto& b : flock.getBoids()) // access by reference to avoid copying
             {
-                glm::mat4 mvMatrix =
-                    glm::translate(globalMVMatrix, {b.getPos() * glm::vec3{3.f}});
-                mvMatrix = glm::scale(mvMatrix, glm::vec3{0.1f});
+                // glm::mat4 mvMatrix =
+                //     glm::translate(globalMVMatrix, {});
+                // mvMatrix = glm::scale(mvMatrix, glm::vec3{0.1f});
 
-                rBoids.setMVMatrix(mvMatrix);
-                rBoids.draw(camera);
+                Transform flockTransform{b.getPos() * glm::vec3{3.f}, {0.f, 0.f, 0.f}, .05f};
+                _renderer.drawObject(flockTransform.getTransform(), ghost);
+                // rBoids.setMVMatrix(mvMatrix);
+                // rBoids.draw(_camera);
             }
         }
     }
 
     void start()
     {
-        ctx.start();
+        _ctx.start();
     }
 };

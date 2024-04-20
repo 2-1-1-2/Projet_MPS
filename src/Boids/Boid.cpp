@@ -1,7 +1,5 @@
 
 #include "Boid.hpp"
-#include <iostream>
-#include "glm/fwd.hpp"
 
 static constexpr float maxSpeed = 0.006;
 static constexpr float minSpeed = 0.003;

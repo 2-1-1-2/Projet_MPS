@@ -125,54 +125,54 @@ private:
 
 /* ---------- TEXTURE ----------*/
 
-class Texture {
-    img::Image   image;
-    GLuint       _id{};
-    unsigned int _width;
-    unsigned int _height;
+// class Texture {
+//     img::Image   image;
+//     GLuint       _id{};
+//     unsigned int _width;
+//     unsigned int _height;
 
-public:
-    explicit Texture(const std::filesystem::path& path)
-        : image(p6::load_image_buffer(path)), _width(image.width()), _height(image.height())
-    {
-        glGenTextures(1, &_id);
-        bind();
-        parameter();
-        debind();
-    }
+// public:
+//     explicit Texture(const std::filesystem::path& path)
+//         : image(p6::load_image_buffer(path)), _width(image.width()), _height(image.height())
+//     {
+//         glGenTextures(1, &_id);
+//         bind();
+//         parameter();
+//         debind();
+//     }
 
-    ~Texture()
-    {
-        glDeleteTextures(1, &_id);
-    }
+//     ~Texture()
+//     {
+//         glDeleteTextures(1, &_id);
+//     }
 
-    void bind() const { glBindTexture(GL_TEXTURE_2D, _id); }
+//     void bind() const { glBindTexture(GL_TEXTURE_2D, _id); }
 
-    void debind() const { glBindTexture(GL_TEXTURE_2D, 0); }
+//     void debind() const { glBindTexture(GL_TEXTURE_2D, 0); }
 
-    unsigned int   height() const { return _height; }
-    unsigned int   width() const { return _width; } //
-    const uint8_t* data() const { return image.data(); }
-    void           parameter() const
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width(), height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data());
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    }
+//     unsigned int   height() const { return _height; }
+//     unsigned int   width() const { return _width; } //
+//     const uint8_t* data() const { return image.data(); }
+//     void           parameter() const
+//     {
+//         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width(), height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data());
+//         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//     }
 
-    GLuint getId() const { return _id; }
-    void   activeTexture(int i = 0) const
-    {
-        glActiveTexture(GL_TEXTURE0 + i);
-        glBindTexture(GL_TEXTURE_2D, _id);
-    }
+//     GLuint getId() const { return _id; }
+//     void   activeTexture(int i = 0) const
+//     {
+//         glActiveTexture(GL_TEXTURE0 + i);
+//         glBindTexture(GL_TEXTURE_2D, _id);
+//     }
 
-    void deactiveTexture(int i = 0) const
-    {
-        glActiveTexture(GL_TEXTURE0 + i);
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
-};
+//     void deactiveTexture(int i = 0) const
+//     {
+//         glActiveTexture(GL_TEXTURE0 + i);
+//         glBindTexture(GL_TEXTURE_2D, 0);
+//     }
+// };
 
 struct Vertex2DColor {
     glm::vec2 position;

@@ -1,8 +1,8 @@
 #pragma once
 #include <cstdlib>
+#include <iostream>
 #include <vector>
 #include "Maths/Math.hpp"
-#include "Renderer/Renderer.hpp"
 #include "glm/fwd.hpp"
 #include "glm/glm.hpp"
 
