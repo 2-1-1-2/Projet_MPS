@@ -1,3 +1,8 @@
+# How to clone
+```bash
+git clone --recurse-submodules git@github.com:2-1-1-2/Projet_MPS.git
+```
+
 # Simple-p6-Setup
 
 This template contains all the things you need to get started with a clean and modern C++ project (formatter, linter, tests, continuous integration, etc.).

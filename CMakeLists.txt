@@ -42,8 +42,12 @@ target_link_libraries(${PROJECT_NAME} PRIVATE doctest::doctest)
 
 # ---Add p6 library---
 add_subdirectory(lib/p6)
-target_link_libraries(${PROJECT_NAME} PRIVATE p6)
+target_link_libraries(${PROJECT_NAME} PRIVATE  p6::p6)
+
+
 
 # ---Add tinyobj library---
 add_subdirectory(lib/tinyobjloader)
 target_link_libraries(${PROJECT_NAME} PRIVATE tinyobjloader)
+
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
