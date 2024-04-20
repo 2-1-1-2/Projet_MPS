@@ -44,10 +44,15 @@ target_link_libraries(${PROJECT_NAME} PRIVATE doctest::doctest)
 add_subdirectory(lib/p6)
 target_link_libraries(${PROJECT_NAME} PRIVATE  p6::p6)
 
-
-
 # ---Add tinyobj library---
 add_subdirectory(lib/tinyobjloader)
 target_link_libraries(${PROJECT_NAME} PRIVATE tinyobjloader)
 
-file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
+# ---Copy content of assets file after building the project---
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/assets
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
+    COMMENT "Copying assets to build directory"
+)
