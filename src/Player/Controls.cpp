@@ -29,21 +29,33 @@ void Controls::handleCameraRotation()
 
 void Controls::handlePlayerMovements(glm::vec3& playerPosition)
 {
+    glm::vec3 forward = glm::vec3(
+        sin(glm::radians(_camera->getAngleY())), // Horizontal angle in radians
+        0,                                       // No vertical movement in Y-axis
+        -cos(glm::radians(_camera->getAngleY())) // Horizontal angle in radians
+    );
+
+    glm::vec3 right = glm::vec3(
+        cos(glm::radians(_camera->getAngleY())), // Perpendicular to forward vector
+        0,
+        sin(glm::radians(_camera->getAngleY()))
+    );
+
     if (_ctx->key_is_pressed(GLFW_KEY_W))
     {
-        playerPosition.z -= 0.1f; // Move forward
+        playerPosition += forward * _movementSpeed; // Move forward
     }
     if (_ctx->key_is_pressed(GLFW_KEY_S))
     {
-        playerPosition.z += 0.1f; // Move backward
+        playerPosition -= forward * _movementSpeed; // Move backward
     }
     if (_ctx->key_is_pressed(GLFW_KEY_A))
     {
-        playerPosition.x -= 0.1f; // Move left
+        playerPosition -= right * _movementSpeed; // Move left
     }
     if (_ctx->key_is_pressed(GLFW_KEY_D))
     {
-        playerPosition.x += 0.1f; // Move right
+        playerPosition += right * _movementSpeed; // Move right
     }
     // _camera->setTarget(playerPosition); // Update camera to follow the player
 }

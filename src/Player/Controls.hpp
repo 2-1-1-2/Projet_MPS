@@ -1,4 +1,6 @@
 #pragma once
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 #include <vector>
 #include "Cameras/TrackballCamera.hpp"
 #include "Primitives/Object3D.hpp"
@@ -8,6 +10,7 @@
 #include "glm/gtx/quaternion.hpp"
 #include "glm/matrix.hpp"
 #include "p6/p6.h"
+
 
 class Controls {
 private:
@@ -21,6 +24,9 @@ private:
     /// TODO: à mettre dans le GUI
     float _minSrcollDistance = .5f;
     float _maxScrollDistance = 5.f;
+
+    // TODO: à mettre dans le GUI
+    float _movementSpeed = .1f;
 
 public:
     Controls(p6::Context* ctx, TrackballCamera* camera);

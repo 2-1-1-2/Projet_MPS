@@ -19,6 +19,8 @@ public:
 
     glm::mat4 getViewMatrix() const;
     float     getDistance() const { return m_Distance; };
+    float     getAngleX() const { return m_AngleX; };
+    float     getAngleY() const { return m_AngleY; };
 
     void setTarget(glm::vec3* target) { m_Target = target; };
 
