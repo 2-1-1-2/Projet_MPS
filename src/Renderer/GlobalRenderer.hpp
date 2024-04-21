@@ -13,11 +13,11 @@
 
 class GlobalRenderer {
 private:
-    static float     _uKd;
-    static float     _uKs;
-    static float     _uLightIntensity;
-    static float     _uShininess;
-    static glm::vec3 _lightDir;
+    static float     _uKd;             // [GUI]
+    static float     _uKs;             // [GUI]
+    static float     _uLightIntensity; // [GUI]
+    static float     _uShininess;      // [GUI]
+    static glm::vec3 _lightDir;        // [GUI]
 
     std::vector<Object3D> _objects;
     p6::Context*          _ctx;
@@ -26,9 +26,9 @@ private:
 public:
     explicit GlobalRenderer(p6::Context* ctx, TrackballCamera* camera);
 
-    void        drawObject(const glm::mat4& modelMatrix, const Object3D& object) const;
+    void        drawObject(const glm::mat4& modelMatrix, const Object3D& object, float transparency = 1.f) const;
     void        clearAll();
-    static void initializeUIElements();
+    static void initializeGUI();
     // void        addObject(Object3D& _objects);
     // void        clearObjects();
     // void        close();

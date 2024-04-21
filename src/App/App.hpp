@@ -13,13 +13,15 @@
 #include "p6/p6.h"
 
 struct Scene {
-    float    cubeBaseSize   = 10.f; // for reference only, do not touch
-    float    groundBaseSize = 2.f;  // for reference only, do not touch
-    float    size           = 100.f;
-    float    groundLevel    = 5.f;
+    float    cubeBaseSize             = 10.f;  // for reference only, do not touch
+    float    groundBaseSize           = 2.f;   // for reference only, do not touch
+    float    size                     = 100.f; // [GUI]
+    float    groundLevel              = 5.f;   // [GUI]
+    float    boundingCubeTransparency = 1.f;
     Object3D boundingCube{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
     Object3D ground{"Ground", "3D.vs.glsl", "tex3D.fs.glsl"};
     Object3D grave{"Grave", "3D.vs.glsl", "tex3D.fs.glsl"};
+    Object3D hand{"Hand", "3D.vs.glsl", "tex3D.fs.glsl"};
 };
 
 class App {
@@ -34,9 +36,16 @@ private:
     std::vector<Flock> _flocks;
     Scene              _scene;
 
-    //
-    unsigned int _nb_boids  = 20;
-    unsigned int _nb_flocks = 10;
+    /// TODO: Faire en sorte qu'on puisse le modifier dans le GUI et que ça impacte le jeu
+    int _nb_boids  = 20; // [GUI]
+    int _nb_flocks = 10; // [GUI]
+
+    void showGUI()
+    {
+        initializeGUI();
+        _player.initializeGUI();
+        _renderer.initializeGUI();
+    }
 
     void gameLogic()
     {
@@ -44,11 +53,6 @@ private:
             flock.move();
 
         _player.handleMovements();
-    }
-
-    void showUI()
-    {
-        _renderer.initializeUIElements();
     }
 
     void render()
@@ -60,22 +64,22 @@ private:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);
 
-        Transform boundingCubeTransform{{0.f, (_scene.size / 2) - _scene.groundLevel, 0.f}, {0.f, 0.f, 0.f}, _scene.size / _scene.cubeBaseSize};
-        _renderer.drawObject(boundingCubeTransform.getTransform(), _scene.boundingCube);
-
         Transform groundTransform{{0.f, -1.f, 0.f}, {0.f, 0.f, 0.f}, _scene.size / _scene.groundBaseSize};
         _renderer.drawObject(groundTransform.getTransform(), _scene.ground);
 
         Transform graveTransform{{5.f, -1.f, 0.f}, {0.f, 0.f, 0.f}, .7f};
         _renderer.drawObject(graveTransform.getTransform(), _scene.grave);
+        Transform handTransform{{5.f + 1.2f, -1.f, 0.f}, {0.f, 90.f, 0.f}, .2f};
+        _renderer.drawObject(handTransform.getTransform(), _scene.hand);
+
+        renderFlock();
 
         _player.animatePlayer();
         Transform ghostTransform{_player.getPosition(), {0.f, -_player.getLastOrientation() + 180, 0.f}, .3f};
-        _renderer.drawObject(ghostTransform.getTransform(), _player.getObject3D());
+        _renderer.drawObject(ghostTransform.getTransform(), _player.getObject3D(), _player.getTransparency());
 
-        // Transform groundTransform{{0.f, (_scene.size / 2) - _scene.groundLevel, 0.f}, {0.f, 0.f, 0.f}, _scene.size / _scene.cubeBaseSize};
-
-        renderFlock();
+        Transform boundingCubeTransform{{0.f, (_scene.size / 2) - _scene.groundLevel, 0.f}, {0.f, 0.f, 0.f}, _scene.size / _scene.cubeBaseSize};
+        _renderer.drawObject(boundingCubeTransform.getTransform(), _scene.boundingCube, _scene.boundingCubeTransparency);
     }
 
     void renderFlock()
@@ -98,6 +102,17 @@ private:
         _player.getObject3D().clear();
     }
 
+    void initializeGUI()
+    {
+        ImGui::Begin("Scene parameters");
+        ImGui::SliderInt("Nb of boids", &_nb_boids, 0, 30);
+        ImGui::SliderInt("Nb of flocks", &_nb_flocks, 0, 10);
+        ImGui::SliderFloat("Bounding box size", &_scene.size, 7.f, 200.f);
+        ImGui::SliderFloat("Bounding box transparency", &_scene.boundingCubeTransparency, 0.f, 1.f);
+        ImGui::SliderFloat("Ground level", &_scene.groundLevel, 1.f, _scene.size - 1.f);
+        ImGui::End();
+    }
+
 public:
     explicit App()
         : _renderer(&_ctx, &_camera), _player(&_ctx, &_camera, &_scene.size), _camera(&_player.getPosition())
@@ -118,11 +133,16 @@ public:
         cleanUp();
     }
 
+    void GUI()
+    {
+        _ctx.imgui = [&]() {
+            showGUI();
+        };
+    };
     void update()
     {
         _ctx.update = [&]() {
             gameLogic();
-            showUI();
             render();
         };
     }

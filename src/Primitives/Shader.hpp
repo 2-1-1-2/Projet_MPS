@@ -14,6 +14,7 @@ public:
     GLint uKd;
     GLint uKs;
     GLint uShininess;
+    GLint uTransparency;
     GLint uLightDir_vs;
     GLint uLightPos_vs;
     GLint uLightIntensity;

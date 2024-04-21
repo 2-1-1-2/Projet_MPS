@@ -22,3 +22,13 @@ void Player::animatePlayer()
     float hoverDelta = _hoverAmplitude * sin(_hoverFrequency * _hoverTime);
     _position.y      = 0 + hoverDelta;
 }
+
+void Player::initializeGUI()
+{
+    _controls.initializeGUI();
+    ImGui::Begin("Character look parameters");
+    // ImGui::SliderFloat("Transparency", &_transparency, .0f, 1.f);
+    ImGui::SliderFloat("Animation amplitude", &_hoverAmplitude, .01f, .4f);
+    ImGui::SliderFloat("Animation frequency", &_hoverFrequency, .01f, 20.f);
+    ImGui::End();
+}
