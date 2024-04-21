@@ -13,11 +13,13 @@
 #include "p6/p6.h"
 
 struct Scene {
-    float    cubeBaseSize = 10.f; // for reference only, do not touch
-    float    size         = 20.f;
-    float    groundLevel  = 5.f;
+    float    cubeBaseSize   = 10.f; // for reference only, do not touch
+    float    groundBaseSize = 2.f;  // for reference only, do not touch
+    float    size           = 100.f;
+    float    groundLevel    = 5.f;
     Object3D boundingCube{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
-    Object3D environment{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
+    Object3D ground{"Ground", "3D.vs.glsl", "tex3D.fs.glsl"};
+    Object3D grave{"Grave", "3D.vs.glsl", "tex3D.fs.glsl"};
 };
 
 class App {
@@ -31,6 +33,8 @@ private:
     Player             _player;
     std::vector<Flock> _flocks;
     Scene              _scene;
+
+    Object3D willOWisp{"WillOWisp", "3D.vs.glsl", "tex3D.fs.glsl"};
 
     void gameLogic()
     {
@@ -52,10 +56,17 @@ private:
         Transform boundingCubeTransform{{0.f, (_scene.size / 2) - _scene.groundLevel, 0.f}, {0.f, 0.f, 0.f}, _scene.size / _scene.cubeBaseSize};
         _renderer.drawObject(boundingCubeTransform.getTransform(), _scene.boundingCube);
 
-        // float     hoverDelta = _hoverAmplitude * sin(_hoverFrequency * _hoverTime);
+        Transform groundTransform{{0.f, -1.f, 0.f}, {0.f, 0.f, 0.f}, _scene.size / _scene.groundBaseSize};
+        _renderer.drawObject(groundTransform.getTransform(), _scene.ground);
+
+        Transform graveTransform{{5.f, -1.f, 0.f}, {0.f, 0.f, 0.f}, .7f};
+        _renderer.drawObject(graveTransform.getTransform(), _scene.grave);
+
         _player.animatePlayer();
         Transform ghostTransform{_player.getPosition(), {0.f, -_player.getLastOrientation() + 180, 0.f}, .3f};
         _renderer.drawObject(ghostTransform.getTransform(), _player.getObject3D());
+
+        // Transform groundTransform{{0.f, (_scene.size / 2) - _scene.groundLevel, 0.f}, {0.f, 0.f, 0.f}, _scene.size / _scene.cubeBaseSize};
 
         renderFlock();
     }
@@ -66,8 +77,8 @@ private:
         {
             for (auto& b : flock.getBoids()) // access by reference to avoid copying
             {
-                Transform flockTransform{b.getPos() * glm::vec3{3.f}, {0.f, 0.f, 0.f}, .05f};
-                _renderer.drawObject(flockTransform.getTransform(), _player.getObject3D());
+                Transform flockTransform{b.getPos() * glm::vec3{3.f}, {0.f, 0.f, 0.f}, .075f};
+                _renderer.drawObject(flockTransform.getTransform(), willOWisp);
             }
         }
     }

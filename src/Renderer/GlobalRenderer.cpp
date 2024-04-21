@@ -1,10 +1,10 @@
 #include "GlobalRenderer.hpp"
 
-float     GlobalRenderer::_uKd             = 1.f;
+float     GlobalRenderer::_uKd             = .9f;
 float     GlobalRenderer::_uKs             = 3.f;
-float     GlobalRenderer::_uLightIntensity = 0.5f;
+float     GlobalRenderer::_uLightIntensity = 0.8f;
 float     GlobalRenderer::_uShininess      = 4.f;
-glm::vec3 GlobalRenderer::_lightDir{0.5f, 0.5f, 0.5f};
+glm::vec3 GlobalRenderer::_lightDir{10.f, 10.f, 10.f};
 
 GlobalRenderer::GlobalRenderer(p6::Context* ctx, TrackballCamera* camera)
     : _ctx(ctx), _camera(camera)
@@ -29,7 +29,7 @@ void GlobalRenderer::drawObject(const glm::mat4& modelMatrix, const Object3D& ob
 
     glUniform3f(object.getShader().uKd, _uKd, _uKd, _uKd);
     glUniform3f(object.getShader().uKs, _uKs, _uKs, _uKs);
-    glUniform3fv(object.getShader().uLightDir_vs, 1, glm::value_ptr(glm::vec4(_lightDir, 1.f) * viewMatrix));
+    glUniform3fv(object.getShader().uLightDir_vs, 1, glm::value_ptr(glm::vec4(_lightDir, 1.f) * glm::inverse(viewMatrix)));
     glUniform3fv(object.getShader().uLightPos_vs, 1, glm::value_ptr(viewMatrix * glm::vec4(lightPos, 1.f)));
     glUniform3f(object.getShader().uLightIntensity, _uLightIntensity, _uLightIntensity, _uLightIntensity);
     glUniform1f(object.getShader().uShininess, _uShininess);
