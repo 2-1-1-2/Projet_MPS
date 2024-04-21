@@ -34,7 +34,9 @@ private:
     std::vector<Flock> _flocks;
     Scene              _scene;
 
-    Object3D willOWisp{"WillOWisp", "3D.vs.glsl", "tex3D.fs.glsl"};
+    //
+    unsigned int _nb_boids  = 20;
+    unsigned int _nb_flocks = 10;
 
     void gameLogic()
     {
@@ -42,6 +44,11 @@ private:
             flock.move();
 
         _player.handleMovements();
+    }
+
+    void showUI()
+    {
+        _renderer.initializeUIElements();
     }
 
     void render()
@@ -78,7 +85,7 @@ private:
             for (auto& b : flock.getBoids()) // access by reference to avoid copying
             {
                 Transform flockTransform{b.getPos() * glm::vec3{3.f}, {0.f, 0.f, 0.f}, .075f};
-                _renderer.drawObject(flockTransform.getTransform(), willOWisp);
+                _renderer.drawObject(flockTransform.getTransform(), flock.getObject3D());
             }
         }
     }
@@ -86,19 +93,21 @@ private:
     void cleanUp()
     {
         _scene.boundingCube.clear();
+        _scene.ground.clear();
+        _scene.grave.clear();
         _player.getObject3D().clear();
     }
 
 public:
-    explicit App(unsigned int nb_boids, unsigned int nb_flocks)
+    explicit App()
         : _renderer(&_ctx, &_camera), _player(&_ctx, &_camera, &_scene.size), _camera(&_player.getPosition())
     {
         _ctx.maximize_window();
 
         // Instantiate flock
-        for (unsigned int i = 0; i < nb_flocks; i++)
+        for (unsigned int i = 0; i < _nb_flocks; i++)
         {
-            _flocks.push_back(Flock(nb_boids));
+            _flocks.push_back(Flock(_nb_boids));
         }
 
         _player.handleControls();
@@ -113,6 +122,7 @@ public:
     {
         _ctx.update = [&]() {
             gameLogic();
+            showUI();
             render();
         };
     }

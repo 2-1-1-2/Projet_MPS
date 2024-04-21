@@ -1,10 +1,10 @@
 #include "GlobalRenderer.hpp"
 
-float     GlobalRenderer::_uKd             = .9f;
-float     GlobalRenderer::_uKs             = 3.f;
-float     GlobalRenderer::_uLightIntensity = 0.8f;
-float     GlobalRenderer::_uShininess      = 4.f;
-glm::vec3 GlobalRenderer::_lightDir{10.f, 10.f, 10.f};
+float     GlobalRenderer::_uKd             = .98f;
+float     GlobalRenderer::_uKs             = 2.96f;
+float     GlobalRenderer::_uLightIntensity = 1.12f;
+float     GlobalRenderer::_uShininess      = 38.f;
+glm::vec3 GlobalRenderer::_lightDir{12.f, 16.f, 14.f};
 
 GlobalRenderer::GlobalRenderer(p6::Context* ctx, TrackballCamera* camera)
     : _ctx(ctx), _camera(camera)
@@ -58,30 +58,13 @@ void GlobalRenderer::clearAll()
 
 void GlobalRenderer::initializeUIElements()
 {
+    ImGui::Begin("Light parameters");
     ImGui::SliderFloat("Diffuse Reflection", &_uKd, 0.f, 10.f);
     ImGui::SliderFloat("Glossy Reflection", &_uKs, 0.f, 10.f);
     ImGui::SliderFloat("Light Intensity", &_uLightIntensity, 0.f, 2.f);
     ImGui::SliderFloat("Shininess", &_uShininess, 0.f, 100.f);
-    ImGui::SliderFloat("Light Direction X", &_lightDir.x, -1.f, 1.f);
-    ImGui::SliderFloat("Light Direction Y", &_lightDir.y, -1.f, 1.f);
-    ImGui::SliderFloat("Light Direction Z", &_lightDir.z, -1.f, 1.f);
+    ImGui::SliderFloat("Light Direction X", &_lightDir.x, -30.f, 30.f);
+    ImGui::SliderFloat("Light Direction Y", &_lightDir.y, -1.f, 30.f);
+    ImGui::SliderFloat("Light Direction Z", &_lightDir.z, -30.f, 30.f);
+    ImGui::End();
 };
-
-// void GlobalRenderer::addObject(Object3D& object)
-// {
-//     _objects.emplace_back(object);
-// }
-
-// void GlobalRenderer::clearObjects()
-// {
-//     for (Object3D& object : _objects)
-//     {
-//         std::cout << "j'ai clear un objet lol" << std::endl;
-//         object.clear();
-//     }
-// }
-
-// void GlobalRenderer::close()
-// {
-//     clearObjects();
-// }

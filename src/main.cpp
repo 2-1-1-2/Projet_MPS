@@ -13,7 +13,7 @@ int main()
     if (doctest::Context{}.run() != 0)
         return EXIT_FAILURE;
 
-    App App(20, 5);
+    App App;
     App.update();
     App.start();
     App.stop();

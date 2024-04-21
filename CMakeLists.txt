@@ -49,7 +49,7 @@ add_subdirectory(lib/tinyobjloader)
 target_link_libraries(${PROJECT_NAME} PRIVATE tinyobjloader)
 
 # [PROD] ---Copy the content of assets file---
-# file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 
 # [DEV] ---Copy content of assets file after building the project---
 add_custom_command(

@@ -7,6 +7,13 @@ Object3D::Object3D(const std::string& name, const std::string& vertexShaderPath,
     defineVAO();
 };
 
+Object3D::Object3D(const std::string& name, const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& skinID)
+    : _model(name), _texture(name + skinID), _shader(vertexShaderPath, fragmentShaderPath)
+{
+    defineVBO();
+    defineVAO();
+}
+
 // Sets up the vertex buffer object (VBO)
 void Object3D::defineVBO()
 {
