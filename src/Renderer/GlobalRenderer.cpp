@@ -1,10 +1,10 @@
 #include "GlobalRenderer.hpp"
 
-float     GlobalRenderer::_uKd             = .9f;
-float     GlobalRenderer::_uKs             = 3.f;
-float     GlobalRenderer::_uLightIntensity = 0.8f;
-float     GlobalRenderer::_uShininess      = 4.f;
-glm::vec3 GlobalRenderer::_lightDir{10.f, 10.f, 10.f};
+float     GlobalRenderer::_uKd             = .98f;     // [GUI]
+float     GlobalRenderer::_uKs             = 2.96f;    // [GUI]
+float     GlobalRenderer::_uLightIntensity = 1.12f;    // [GUI]
+float     GlobalRenderer::_uShininess      = 38.f;     // [GUI]
+glm::vec3 GlobalRenderer::_lightDir{12.f, 16.f, 14.f}; // [GUI]
 
 GlobalRenderer::GlobalRenderer(p6::Context* ctx, TrackballCamera* camera)
     : _ctx(ctx), _camera(camera)
@@ -14,7 +14,7 @@ GlobalRenderer::GlobalRenderer(p6::Context* ctx, TrackballCamera* camera)
     glCullFace(GL_BACK);
 };
 
-void GlobalRenderer::drawObject(const glm::mat4& modelMatrix, const Object3D& object) const
+void GlobalRenderer::drawObject(const glm::mat4& modelMatrix, const Object3D& object, float transparency) const
 {
     glm::vec3 lightPos{0.f, 0.f, 0.f};
 
@@ -27,12 +27,24 @@ void GlobalRenderer::drawObject(const glm::mat4& modelMatrix, const Object3D& ob
     glBindVertexArray(object.getVAO());
     object.getShader().shader.use();
 
+    // Handle transparancy
+    if (transparency < 1.f)
+    {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+    else
+    {
+        glDisable(GL_BLEND);
+    }
+
     glUniform3f(object.getShader().uKd, _uKd, _uKd, _uKd);
     glUniform3f(object.getShader().uKs, _uKs, _uKs, _uKs);
     glUniform3fv(object.getShader().uLightDir_vs, 1, glm::value_ptr(glm::vec4(_lightDir, 1.f) * glm::inverse(viewMatrix)));
     glUniform3fv(object.getShader().uLightPos_vs, 1, glm::value_ptr(viewMatrix * glm::vec4(lightPos, 1.f)));
     glUniform3f(object.getShader().uLightIntensity, _uLightIntensity, _uLightIntensity, _uLightIntensity);
     glUniform1f(object.getShader().uShininess, _uShininess);
+    glUniform1f(object.getShader().uTransparency, transparency);
     glUniform1i(object.getShader().uTexture, 0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, object.getTexture().getTextureID());
@@ -56,32 +68,15 @@ void GlobalRenderer::clearAll()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
 }
 
-void GlobalRenderer::initializeUIElements()
+void GlobalRenderer::initializeGUI()
 {
+    ImGui::Begin("Light parameters");
     ImGui::SliderFloat("Diffuse Reflection", &_uKd, 0.f, 10.f);
     ImGui::SliderFloat("Glossy Reflection", &_uKs, 0.f, 10.f);
     ImGui::SliderFloat("Light Intensity", &_uLightIntensity, 0.f, 2.f);
     ImGui::SliderFloat("Shininess", &_uShininess, 0.f, 100.f);
-    ImGui::SliderFloat("Light Direction X", &_lightDir.x, -1.f, 1.f);
-    ImGui::SliderFloat("Light Direction Y", &_lightDir.y, -1.f, 1.f);
-    ImGui::SliderFloat("Light Direction Z", &_lightDir.z, -1.f, 1.f);
+    ImGui::SliderFloat("Light Direction X", &_lightDir.x, -30.f, 30.f);
+    ImGui::SliderFloat("Light Direction Y", &_lightDir.y, -1.f, 30.f);
+    ImGui::SliderFloat("Light Direction Z", &_lightDir.z, -30.f, 30.f);
+    ImGui::End();
 };
-
-// void GlobalRenderer::addObject(Object3D& object)
-// {
-//     _objects.emplace_back(object);
-// }
-
-// void GlobalRenderer::clearObjects()
-// {
-//     for (Object3D& object : _objects)
-//     {
-//         std::cout << "j'ai clear un objet lol" << std::endl;
-//         object.clear();
-//     }
-// }
-
-// void GlobalRenderer::close()
-// {
-//     clearObjects();
-// }

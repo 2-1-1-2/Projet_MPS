@@ -21,15 +21,15 @@ private:
     float  _margin = .5f;
 
     /// TODO: à mettre dans le GUI
-    float _scrollSensitivity = .2f;
-    float _mouseSensitivity  = 90.f;
+    float _scrollSensitivity = .2f;  // [GUI]
+    float _mouseSensitivity  = 90.f; // [GUI]
 
     /// TODO: à mettre dans le GUI
-    float _minSrcollDistance = .5f;
-    float _maxScrollDistance = 5.f;
+    float _minScrollDistance = .5f; // [GUI]
+    float _maxScrollDistance = 5.f; // [GUI]
 
-    // TODO: à mettre dans le GUI
-    float _movementSpeed = .1f;
+    /// TODO: à mettre dans le GUI
+    float _movementSpeed = .1f; // [GUI]
 
 public:
     Controls(p6::Context* ctx, TrackballCamera* camera, float* mapSize);
@@ -37,5 +37,6 @@ public:
     void      handleCameraZoom();
     void      handleCameraRotation();
     void      handlePlayerMovements(glm::vec3& playerPosition);
+    void      initializeGUI();
     glm::vec3 getLastDirection() { return _lastDirection; };
 };

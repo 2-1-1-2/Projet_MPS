@@ -2,44 +2,25 @@
 #include <cassert>
 #include <vector>
 #include "Boid.hpp"
+#include "Primitives/Object3D.hpp"
 
 class Flock {
 private:
-    std::vector<Boid> boids;
+    std::vector<Boid>        _boids;
+    std::vector<std::string> _skinList = {"_red", "_orange", "_blue", "_green", "_blue", "_grey", "_monochrome"};
+
+    Object3D _object3D;
+
+    void addBoid();
+    void deleteBoid();
+    void populateFlock(const unsigned int number);
+    void deleteBoids(const unsigned int number);
 
 public:
-    explicit Flock(const unsigned int number)
-        : boids(number) {}
+    explicit Flock(const unsigned int number);
 
-    std::vector<Boid> getBoids() const { return boids; }
+    void move();
 
-    void move()
-    {
-        for (auto& b : boids)
-        {
-            b.move(boids);
-        }
-    }
-
-private:
-    void addBoid() { boids.emplace_back(Boid()); }
-    void deleteBoid() { boids.pop_back(); }
-
-    void populateFlock(const unsigned int number)
-    {
-        assert(number > 0);
-        for (unsigned int i = 0; i < number; i++)
-        {
-            addBoid();
-        }
-    }
-
-    void deleteBoids(const unsigned int number)
-    {
-        assert(number > 0);
-        for (unsigned int i = 0; i < number; i++)
-        {
-            deleteBoid();
-        }
-    }
+    std::vector<Boid> getBoids() const { return _boids; }
+    Object3D&         getObject3D() { return _object3D; };
 };
