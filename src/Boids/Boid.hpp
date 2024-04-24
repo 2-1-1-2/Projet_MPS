@@ -23,7 +23,7 @@ private:
 public:
     Boid()
 
-        : Boid(0.5, 0.5, 0.5, glm ::vec3(Math::randUniformC(0, 1), Math::randUniformC(0, 1), Math::randUniformC(0, 1)), glm::vec3(Math::randUniformC(0, 1), Math::randUniformC(0, 1), Math::randUniformC(0, 1))){};
+        : Boid(0.5, 0.5, 0.5, glm ::vec3(Math::randUniformC(-10, 10), Math::randUniformC(-10, 10), Math::randUniformC(-10, 10)), glm::vec3(Math::randUniformC(-1, 1), Math::randUniformC(-1, 1), Math::randUniformC(-1, 1))){};
     Boid(float avf, float alf, float cof, glm::vec3 p, glm::vec3 v);
 
     glm::vec3 getPos() const { return position; }

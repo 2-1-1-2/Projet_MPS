@@ -116,6 +116,7 @@ private:
         _scene.boundingCube.clear();
         _scene.ground.clear();
         _scene.grave.clear();
+        _scene.hand.clear();
         _player.getObject3D().clear();
     }
 
@@ -145,7 +146,7 @@ public:
         int nb = Math::randBinomial(0.6, 15);
         for (unsigned int i = 0; i < nb; i++)
         {
-            _scene.positions.push_back(std::make_pair(Math::randUniformC(-10, 10), Math::randUniformC(-10, 10)));
+            _scene.positions.push_back(std::make_pair(Math::randBeta(0.5, 0.5, -10, 10), Math::randBeta(0.5, 0.5, -10, 10)));
 
             _scene.grave.push_back(Object3D("Grave", "3D.vs.glsl", "tex3D.fs.glsl"));
 

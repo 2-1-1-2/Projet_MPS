@@ -7,10 +7,7 @@ static constexpr float minSpeed = 0.003;
 Boid::Boid(float avf, float alf, float cof, glm::vec3 p, glm::vec3 v)
     : avoidFactor(avf), alignmentFactor(alf), cohesionFactor(cof), position(p), velocity(v)
 {
-    position *= glm::vec3(Math::randomSign(), Math::randomSign(), Math::randomSign());
     velocity /= 100;
-
-    velocity *= glm::vec3(Math::randomSign(), Math::randomSign(), Math::randomSign());
 };
 
 void Boid::avoid(const std::vector<Boid>& boids)
@@ -105,12 +102,16 @@ void Boid::move(const std::vector<Boid>& boids)
 
 void Boid::wallCollision()
 {
-    if (std::abs((position + velocity).x) >= 1)
+    if (std::abs((position + velocity).x) >= 10)
     {
         velocity.x = -velocity.x;
     }
-    if (std::abs((position + velocity).y) >= 1)
+    if (std::abs((position + velocity).y) >= 10)
     {
         velocity.y = -velocity.y;
+    }
+    if (std::abs((position + velocity).z) >= 10)
+    {
+        velocity.z = -velocity.z;
     }
 }
