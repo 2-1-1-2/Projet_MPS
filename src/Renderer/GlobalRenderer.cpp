@@ -88,13 +88,27 @@ void GlobalRenderer::clearAll()
 
 void GlobalRenderer::initializeGUI()
 {
-    ImGui::Begin("Light parameters");
-    ImGui::SliderFloat("Diffuse Reflection", &_uKd, 0.f, 10.f);
-    ImGui::SliderFloat("Glossy Reflection", &_uKs, 0.f, 10.f);
-    ImGui::SliderFloat("Light Intensity", &_uLightIntensity, 0.f, 2.f);
-    ImGui::SliderFloat("Shininess", &_uShininess, 0.f, 80.f);
-    ImGui::SliderFloat("Light Direction X", &_lightDir.x, -30.f, 30.f);
-    ImGui::SliderFloat("Light Direction Y", &_lightDir.y, -1.f, 30.f);
-    ImGui::SliderFloat("Light Direction Z", &_lightDir.z, -30.f, 30.f);
-    ImGui::End();
+    if (ImGui::CollapsingHeader("Light"))
+    {
+        ImGui::Indent();
+        if (ImGui::CollapsingHeader("Global"))
+        {
+            ImGui::Indent();
+            GUIhelp("Adjust how the light reacts on objects.");
+            ImGui::SliderFloat("Diffuse Reflection", &_uKd, 0.f, 10.f);
+            ImGui::SliderFloat("Glossy Reflection", &_uKs, 0.f, 10.f);
+            ImGui::SliderFloat("Light Intensity", &_uLightIntensity, 0.f, 2.f);
+            ImGui::SliderFloat("Shininess", &_uShininess, 0.f, 80.f);
+            ImGui::Unindent();
+        }
+        if (ImGui::CollapsingHeader("Directional light"))
+        {
+            ImGui::Indent();
+            ImGui::SliderFloat("X", &_lightDir.x, -30.f, 30.f);
+            ImGui::SliderFloat("Y", &_lightDir.y, -1.f, 30.f);
+            ImGui::SliderFloat("Z", &_lightDir.z, -30.f, 30.f);
+            ImGui::Unindent();
+        }
+        ImGui::Unindent();
+    }
 };
