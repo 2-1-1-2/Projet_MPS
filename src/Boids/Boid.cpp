@@ -93,9 +93,9 @@ void Boid::limitSpeed()
     }
 }
 
-void Boid::move(const std::vector<Boid>& boids)
+void Boid::move(const std::vector<Boid>& boids, float& speedMultiplier)
 {
-    position += velocity;
+    position += velocity * speedMultiplier;
     wallCollision();
     cohesion(boids);
     avoid(boids);

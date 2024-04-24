@@ -27,7 +27,7 @@ public:
     Boid(float avf, float alf, float cof, glm::vec3 p, glm::vec3 v);
 
     glm::vec3 getPos() const { return position; }
-    void      move(const std::vector<Boid>& boids);
+    void      move(const std::vector<Boid>& boids, float& speedMultiplier);
     void      wallCollision();
     void      limitSpeed();
     void      avoid(const std::vector<Boid>& boids);

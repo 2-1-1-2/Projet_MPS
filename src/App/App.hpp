@@ -40,7 +40,8 @@ private:
     std::vector<Flock> _flocks;
     Scene              _scene;
 
-    int _LoD = 3; // [GUI]
+    int   _LoD                    = 3;   // [GUI]
+    float _speed_multiplier_boids = 1.f; // [GUI]
 
     /// TODO: Faire en sorte qu'on puisse le modifier dans le GUI et que ça impacte le jeu
     int _nb_boids  = 20; // [GUI]
@@ -49,7 +50,7 @@ private:
     void gameLogic()
     {
         for (auto& flock : _flocks)
-            flock.move();
+            flock.move(_speed_multiplier_boids);
 
         _player.handleMovements();
     }
@@ -189,6 +190,7 @@ private:
             // ImGui::SliderInt("Nb of flocks", &_nb_flocks, 0, 10);
             ImGui::SliderInt("LoD", &_LoD, 1, 3);
             GUIhelp("Change quality of the boid's model. The higher the better.");
+            ImGui::SliderFloat("Speed", &_speed_multiplier_boids, 0, 5);
             ImGui::Unindent();
         }
 

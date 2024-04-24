@@ -3,10 +3,10 @@
 Flock::Flock(const unsigned int number)
     : _boids(number), _object3D_high("WillOWisp", "3D.vs.glsl", "tex3D.fs.glsl", _skinList[p6::random::number(0, 7)], "_high"), _object3D_mid("WillOWisp", "3D.vs.glsl", "tex3D.fs.glsl", _skinList[p6::random::number(0, 7)], "_mid"), _object3D_low("WillOWisp", "3D.vs.glsl", "tex3D.fs.glsl", _skinList[p6::random::number(0, 7)], "_low") {}
 
-void Flock::move()
+void Flock::move(float& speedMultiplier)
 {
     for (auto& b : _boids)
-        b.move(_boids);
+        b.move(_boids, speedMultiplier);
 }
 
 void Flock::addBoid()
