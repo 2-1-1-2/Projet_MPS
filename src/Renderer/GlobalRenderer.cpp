@@ -1,4 +1,5 @@
 #include "GlobalRenderer.hpp"
+#include <cmath>
 
 // Global directional illumination parameters
 // Cell shading light
@@ -7,11 +8,13 @@
 // float     GlobalRenderer::_uLightIntensity = .012f;         // [GUI]
 // float     GlobalRenderer::_uShininess      = .006f;         // [GUI]
 // Classic light
-float     GlobalRenderer::_uKd             = 1.1f;          // [GUI]
-float     GlobalRenderer::_uKs             = 0.2f;          // [GUI]
-float     GlobalRenderer::_uLightIntensity = 1.3f;          // [GUI]
-float     GlobalRenderer::_uShininess      = 30.f;          // [GUI]
-glm::vec3 GlobalRenderer::_lightDir{17.36f, 15.48f, 7.81f}; // [GUI]
+float              GlobalRenderer::_uKd             = 1.1f;          // [GUI]
+float              GlobalRenderer::_uKs             = 0.2f;          // [GUI]
+float              GlobalRenderer::_uLightIntensity = 1.3f;          // [GUI]
+float              GlobalRenderer::_uShininess      = 30.f;          // [GUI]
+glm::vec3          GlobalRenderer::_lightDir{17.36f, 15.48f, 7.81f}; // [GUI]
+int                GlobalRenderer::_state = 1;
+std::vector<float> GlobalRenderer::_meteo = {0.8, 0.5, 0.2};
 
 GlobalRenderer::GlobalRenderer(p6::Context* ctx, TrackballCamera* camera)
     : _ctx(ctx), _camera(camera)
@@ -54,6 +57,12 @@ void GlobalRenderer::drawObject(const glm::mat4& modelMatrix, const Object3D& ob
     glUniform3f(object.getShader().uKs, _uKs, _uKs, _uKs);
     glUniform3fv(object.getShader().uLightDir_vs, 1, glm::value_ptr(glm::vec4(_lightDir, 1.f) * glm::inverse(viewMatrix)));
     glUniform3fv(object.getShader().uLightPos_vs, 1, glm::value_ptr(viewMatrix * glm::vec4(lightPos, 1.f)));
+    std::cout << _ctx->delta_time() << "\n";
+
+    if ((static_cast<int>(_ctx->time()) % 10) == 0 && (static_cast<int>(_ctx->time() - _ctx->delta_time()) % 10) != 0)
+    {
+        _uLightIntensity = _meteo[Math::markovChain(_state)];
+    }
     glUniform3f(object.getShader().uLightIntensity, _uLightIntensity, _uLightIntensity, _uLightIntensity);
     glUniform1f(object.getShader().uShininess, _uShininess);
 
@@ -103,7 +112,7 @@ void GlobalRenderer::initializeGUI()
             GUIhelp("Adjust how the light reacts on objects.");
             ImGui::SliderFloat("Diffuse Reflection", &_uKd, 0.f, 10.f);
             ImGui::SliderFloat("Glossy Reflection", &_uKs, 0.f, 10.f);
-            ImGui::SliderFloat("Light Intensity", &_uLightIntensity, 0.f, 2.f);
+            /* ImGui::SliderFloat("Light Intensity", &_uLightIntensity, 0.f, 2.f); */
             ImGui::SliderFloat("Shininess", &_uShininess, 0.f, 80.f);
             ImGui::Unindent();
         }

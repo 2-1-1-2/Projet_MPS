@@ -14,10 +14,6 @@ int main()
     if (doctest::Context{}.run() != 0)
         return EXIT_FAILURE;
 
-    for (unsigned int i = 0; i < 100; i++)
-    {
-        Math::randExponential(5);
-    }
     App App;
 
     // Setup context GUI and update loop

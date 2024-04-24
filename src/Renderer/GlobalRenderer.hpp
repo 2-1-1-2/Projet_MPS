@@ -4,6 +4,7 @@
 #include <vector>
 #include "Cameras/TrackballCamera.hpp"
 #include "GUI/GUIhelper.hpp"
+#include "Maths/Math.hpp"
 #include "Primitives/Object3D.hpp"
 #include "Shapes/Common.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
@@ -11,7 +12,6 @@
 #include "glm/gtx/quaternion.hpp"
 #include "glm/matrix.hpp"
 #include "p6/p6.h"
-
 
 struct PointLight {
     glm::vec3 position;
@@ -24,11 +24,13 @@ struct PointLight {
 
 class GlobalRenderer {
 private:
-    static float     _uKd;             // [GUI]
-    static float     _uKs;             // [GUI]
-    static float     _uLightIntensity; // [GUI]
-    static float     _uShininess;      // [GUI]
-    static glm::vec3 _lightDir;        // [GUI]
+    static float              _uKd;             // [GUI]
+    static float              _uKs;             // [GUI]
+    static float              _uLightIntensity; // [GUI]
+    static float              _uShininess;      // [GUI]
+    static glm::vec3          _lightDir;        // [GUI]
+    static int                _state;
+    static std::vector<float> _meteo;
 
     std::vector<Object3D> _objects;
     p6::Context*          _ctx;

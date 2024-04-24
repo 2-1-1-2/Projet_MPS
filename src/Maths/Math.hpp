@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <random>
+#include <utility>
 #include <vector>
 
 class Math {
@@ -22,7 +23,8 @@ public:
             return res;
         } */
 
-    static float rand()
+    static float
+        rand()
     {
         /* static std::random_device                    rand;
         static std::mt19937                          gen(rand());
@@ -137,5 +139,27 @@ public:
             std::swap(min, max);
         }
         return min + proba * (max - min);
+    }
+
+    static int
+        markovChain(int state)
+    {
+        static std::vector<std::vector<float>> stateMarkovProb = {{0.4, 0.3, 0.4}, {0.2, 0.4, 0.4}, {0.3, 0.3, 0.4}};
+        // verification de la somme des proba
+        /*
+        float                                  sum             = std::accumulate(stateMarkovProb[state].begin(), stateMarkovProb[state].end(), 0.);
+        if (sum != 1)
+            return -1; */
+
+        const float rand = randUniformC();
+        int         cpt  = 0;
+        float       acc  = stateMarkovProb[state][cpt];
+        while (cpt < 3 && rand > acc)
+        {
+            cpt++;
+            acc += stateMarkovProb[state][cpt];
+        }
+
+        return cpt;
     }
 };
