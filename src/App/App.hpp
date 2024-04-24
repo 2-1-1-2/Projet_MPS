@@ -15,10 +15,10 @@
 #include "p6/p6.h"
 
 struct Scene {
-    float    cubeBaseSize             = 10.f;  // for reference only, do not touch
-    float    groundBaseSize           = 2.f;   // for reference only, do not touch
-    float    size                     = 100.f; // [GUI]
-    float    groundLevel              = 5.f;   // [GUI]
+    float    cubeBaseSize             = 10.f; // for reference only, do not touch
+    float    groundBaseSize           = 2.f;  // for reference only, do not touch
+    float    size                     = 50.f; // [GUI]
+    float    groundLevel              = 5.f;  // [GUI]
     float    boundingCubeTransparency = 1.f;
     Object3D boundingCube{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
     Object3D ground{"Ground", "3D.vs.glsl", "tex3D.fs.glsl"};
@@ -40,17 +40,17 @@ private:
     std::vector<Flock> _flocks;
     Scene              _scene;
 
-    int   _LoD                    = 3;   // [GUI]
-    float _speed_multiplier_boids = 1.f; // [GUI]
+    int              _LoD = 3;         // [GUI]
+    BoidsMultipliers boidsMultipliers; // [GUI]
 
     /// TODO: Faire en sorte qu'on puisse le modifier dans le GUI et que ça impacte le jeu
-    int _nb_boids  = 20; // [GUI]
-    int _nb_flocks = 10; // [GUI]
+    int _nb_boids  = 100; // [GUI]
+    int _nb_flocks = 5;   // [GUI]
 
     void gameLogic()
     {
         for (auto& flock : _flocks)
-            flock.move(_speed_multiplier_boids);
+            flock.move(boidsMultipliers);
 
         _player.handleMovements();
     }
@@ -191,7 +191,10 @@ private:
             // ImGui::SliderInt("Nb of flocks", &_nb_flocks, 0, 10);
             ImGui::SliderInt("LoD", &_LoD, 1, 3);
             GUIhelp("Change quality of the boid's model. The higher the better.");
-            ImGui::SliderFloat("Speed", &_speed_multiplier_boids, 0, 5);
+            ImGui::SliderFloat("Speed", &boidsMultipliers.speed, 0.f, 20.f);
+            ImGui::SliderFloat("Avoid", &boidsMultipliers.avoid, 0.f, 5.f);
+            ImGui::SliderFloat("Alignment", &boidsMultipliers.alignment, 0.f, 5.f);
+            ImGui::SliderFloat("Cohesion", &boidsMultipliers.cohesion, 0.f, 5.f);
             ImGui::Unindent();
         }
 

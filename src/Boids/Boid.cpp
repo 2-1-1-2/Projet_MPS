@@ -10,7 +10,7 @@ Boid::Boid(float avf, float alf, float cof, glm::vec3 p, glm::vec3 v)
     velocity /= 100;
 };
 
-void Boid::avoid(const std::vector<Boid>& boids)
+void Boid::avoid(const std::vector<Boid>& boids, const float avoidMultiplier)
 {
     glm::vec3 close(0, 0, 0);
 
@@ -25,9 +25,9 @@ void Boid::avoid(const std::vector<Boid>& boids)
         }
     }
 
-    velocity += close * avoidFactor;
+    velocity += close * avoidFactor * avoidMultiplier;
 }
-void Boid::alignment(const std::vector<Boid>& boids)
+void Boid::alignment(const std::vector<Boid>& boids, const float alignmentMultiplier)
 {
     glm::vec3 avgVel(0, 0, 0);
     int       count = 0;
@@ -47,11 +47,11 @@ void Boid::alignment(const std::vector<Boid>& boids)
     if (count > 0)
     {
         avgVel /= count;
-        velocity += (avgVel - velocity) * alignmentFactor;
+        velocity += (avgVel - velocity) * alignmentFactor * alignmentMultiplier;
     }
 }
 
-void Boid::cohesion(const std::vector<Boid>& boids)
+void Boid::cohesion(const std::vector<Boid>& boids, const float cohesionMultiplier)
 {
     glm::vec3 avgPos(0, 0, 0);
     int       count = 0;
@@ -71,7 +71,7 @@ void Boid::cohesion(const std::vector<Boid>& boids)
     if (count > 0)
     {
         avgPos /= count;
-        velocity += (avgPos - position) * cohesionFactor / static_cast<float>(200);
+        velocity += (avgPos - position) * cohesionFactor * cohesionMultiplier / static_cast<float>(200);
     }
 }
 
@@ -90,28 +90,41 @@ void Boid::limitSpeed()
     }
 }
 
-void Boid::move(const std::vector<Boid>& boids, float& speedMultiplier)
+void Boid::move(const std::vector<Boid>& boids, BoidsMultipliers& boidsMultiplier)
 {
-    position += velocity * speedMultiplier;
+    position += velocity * boidsMultiplier.speed;
     wallCollision();
-    cohesion(boids);
-    avoid(boids);
-    alignment(boids);
+    cohesion(boids, boidsMultiplier.cohesion);
+    avoid(boids, boidsMultiplier.avoid);
+    alignment(boids, boidsMultiplier.alignment);
     limitSpeed();
 }
 
 void Boid::wallCollision()
 {
-    if (std::abs((position + velocity).x) >= 10)
+    const float limit = 10.f * 0.75; // Limite pour x, y, z
+
+    // Collision sur l'axe x
+    float newPos = position.x + velocity.x;
+    if (newPos <= -limit || newPos >= limit)
     {
-        velocity.x = -velocity.x;
+        position.x = std::clamp(newPos, -limit, limit); // Ajuste la position x dans les limites
+        velocity.x = -velocity.x;                       // Inverse la vitesse x
     }
-    if (std::abs((position + velocity).y) >= 10)
+
+    // Collision sur l'axe y (assure que y reste toujours positif et dans les limites)
+    newPos = position.y + velocity.y;
+    if (newPos <= -.25 || newPos >= limit)
     {
-        velocity.y = -velocity.y;
+        position.y = std::clamp(newPos, -.25f, limit); // Ajuste la position y entre 0 et limit
+        velocity.y = -velocity.y;                      // Inverse la vitesse y
     }
-    if (std::abs((position + velocity).z) >= 10)
+
+    // Collision sur l'axe z
+    newPos = position.z + velocity.z;
+    if (newPos <= -limit || newPos >= limit)
     {
-        velocity.z = -velocity.z;
+        position.z = std::clamp(newPos, -limit, limit); // Ajuste la position z dans les limites
+        velocity.z = -velocity.z;                       // Inverse la vitesse z
     }
 }

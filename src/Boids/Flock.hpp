@@ -21,7 +21,7 @@ private:
 public:
     explicit Flock(const unsigned int number);
 
-    void move(float& speedMultiplier);
+    void move(BoidsMultipliers& boidsMultiplier);
     void initializeGUI();
 
     std::vector<Boid> getBoids() const { return _boids; }

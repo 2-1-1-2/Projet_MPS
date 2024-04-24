@@ -1,10 +1,16 @@
 #include "GlobalRenderer.hpp"
 
 // Global directional illumination parameters
-float     GlobalRenderer::_uKd             = 0.1f;          // [GUI]
-float     GlobalRenderer::_uKs             = 1.14f;         // [GUI]
-float     GlobalRenderer::_uLightIntensity = .012f;         // [GUI]
-float     GlobalRenderer::_uShininess      = .006f;         // [GUI]
+// Cell shading light
+// float     GlobalRenderer::_uKd             = 0.1f;          // [GUI]
+// float     GlobalRenderer::_uKs             = 1.14f;         // [GUI]
+// float     GlobalRenderer::_uLightIntensity = .012f;         // [GUI]
+// float     GlobalRenderer::_uShininess      = .006f;         // [GUI]
+// Classic light
+float     GlobalRenderer::_uKd             = 1.1f;          // [GUI]
+float     GlobalRenderer::_uKs             = 0.2f;          // [GUI]
+float     GlobalRenderer::_uLightIntensity = 1.3f;          // [GUI]
+float     GlobalRenderer::_uShininess      = 30.f;          // [GUI]
 glm::vec3 GlobalRenderer::_lightDir{17.36f, 15.48f, 7.81f}; // [GUI]
 
 GlobalRenderer::GlobalRenderer(p6::Context* ctx, TrackballCamera* camera)
