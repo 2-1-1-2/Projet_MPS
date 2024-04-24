@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <random>
+#include <vector>
 
 class Math {
 private:
@@ -40,7 +41,7 @@ public:
 
     static int randomInt(int min = 0, int max = 1)
     {
-        return round(randomFloat(min, max));
+        return static_cast<int>(randomFloat(min, max));
     }
 
     static int randomSign()
@@ -60,12 +61,10 @@ public:
 
     static bool randBernouilli(float proba)
     {
-        static const float x = randomFloat();
-        toString("Binomial", proba, x);
-        return x <= proba;
+        return randomFloat() <= proba;
     }
 
-    static float randBinomial(float proba, float n)
+    static int randBinomial(float proba, float n)
     {
         static int success;
         for (unsigned int i = 0; i < n; i++)
@@ -78,10 +77,14 @@ public:
         return success;
     }
 
-    static float randExponential(float lambda)
+    static float randExponential(float lambda) { return -std::log(1 - randomFloat()) / lambda; }
+
+    static float randNormale()
     {
-        /* float proba = lambda * exp((-lambda) * t);  */ // proba de x > t
-        return 1;
+        float u1 = randomFloat();
+        float u2 = randomFloat();
+
+        return std::sqrt(-2.0f * std::log(u1)) * std::cos(2.0f * static_cast<float>(M_PI) * u2);
     }
 
     static float randBeta()
@@ -94,11 +97,6 @@ public:
         return 0;
     }
 
-    static float randNormale()
-    {
-        return 0;
-    }
-
     static void toString(std::string name, float proba, float tirage)
     {
         std::cout << "Loi" << name << "\nProba : " << proba << "\nTirage : " << tirage << "\n\n\n";
@@ -107,9 +105,5 @@ public:
     static float esperance()
     {
         return 0;
-    }
-
-    static void allTest()
-    {
     }
 };

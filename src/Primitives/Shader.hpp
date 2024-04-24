@@ -18,6 +18,7 @@ public:
     GLint uLightDir_vs;
     GLint uLightPos_vs;
     GLint uLightIntensity;
+    GLint uTime;
 
     // Constructor initializes shader with paths to vertex and fragment shader source files, default to basic shaders
     explicit Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);

@@ -4,7 +4,7 @@
 static constexpr float maxSpeed = 0.006;
 static constexpr float minSpeed = 0.003;
 
-Boid::Boid(glm::vec3 p, glm::vec3 v, float avf, float alf, float cof)
+Boid::Boid(float avf, float alf, float cof, glm::vec3 p, glm::vec3 v)
     : avoidFactor(avf), alignmentFactor(alf), cohesionFactor(cof), position(p), velocity(v)
 {
     position *= glm::vec3(Math::randomSign(), Math::randomSign(), Math::randomSign());

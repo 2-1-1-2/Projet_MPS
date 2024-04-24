@@ -1,9 +1,11 @@
 #pragma once
+#include <cmath>
 #include <vector>
 #include "../../lib/p6/src/Context.h"
 #include "../../lib/p6/src/internal/Time/Clock_Realtime.h"
 #include "Boids/Flock.hpp"
 #include "Cameras/TrackballCamera.hpp"
+#include "Maths/Math.hpp"
 #include "Player/Player.hpp"
 #include "Primitives/Model.hpp"
 #include "Primitives/Object3D.hpp"
@@ -20,8 +22,10 @@ struct Scene {
     float    boundingCubeTransparency = 1.f;
     Object3D boundingCube{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
     Object3D ground{"Ground", "3D.vs.glsl", "tex3D.fs.glsl"};
-    Object3D grave{"Grave", "3D.vs.glsl", "tex3D.fs.glsl"};
-    Object3D hand{"Hand", "3D.vs.glsl", "tex3D.fs.glsl"};
+
+    std::vector<std::pair<float, float>> positions;
+    std::vector<Object3D>                grave;
+    std::vector<Object3D>                hand;
 };
 
 class App {
@@ -67,10 +71,23 @@ private:
         Transform groundTransform{{0.f, -1.f, 0.f}, {0.f, 0.f, 0.f}, _scene.size / _scene.groundBaseSize};
         _renderer.drawObject(groundTransform.getTransform(), _scene.ground);
 
-        Transform graveTransform{{5.f, -1.f, 0.f}, {0.f, 0.f, 0.f}, .7f};
-        _renderer.drawObject(graveTransform.getTransform(), _scene.grave);
-        Transform handTransform{{5.f + 1.2f, -1.f, 0.f}, {0.f, 90.f, 0.f}, .2f};
-        _renderer.drawObject(handTransform.getTransform(), _scene.hand);
+        for (unsigned int i = 0; i < _scene.grave.size(); i++)
+        {
+            Transform graveTransform{{_scene.positions[i].first, -1.f, _scene.positions[i].second}, {0.f, 0.f, 0.f}, .7f};
+            _renderer.drawObject(graveTransform.getTransform(), _scene.grave[i]);
+        }
+
+        float hand_position = (static_cast<int>(_ctx.time()) / 2 % 2 == 0 ? -std::fmod(_ctx.time(), 2) : std::fmod(_ctx.time(), 2) - 2) - 1.2;
+        for (unsigned int i = 0; i < _scene.hand.size(); i++)
+        {
+            Transform graveTransform{{_scene.positions[i].first, -1.f, _scene.positions[i].second}, {0.f, 0.f, 0.f}, .7f};
+            _renderer.drawObject(graveTransform.getTransform(), _scene.grave[i]);
+
+            Transform handTransform{{_scene.positions[i].first + 1.2f, (hand_position), _scene.positions[i].second}, {0.f, 90.f, 0.f}, .2f};
+            _renderer.drawObject(handTransform.getTransform(), _scene.hand[i]);
+        }
+
+        ;
 
         renderFlock();
 
@@ -123,6 +140,16 @@ public:
         for (unsigned int i = 0; i < _nb_flocks; i++)
         {
             _flocks.push_back(Flock(_nb_boids));
+        }
+
+        int nb = Math::randBinomial(0.6, 15);
+        for (unsigned int i = 0; i < nb; i++)
+        {
+            _scene.positions.push_back(std::make_pair(Math::randomSign() * Math::randUniformC(0, 40), Math::randomSign() * Math::randUniformC(0, 40)));
+
+            _scene.grave.push_back(Object3D("Grave", "3D.vs.glsl", "tex3D.fs.glsl"));
+
+            _scene.hand.push_back(Object3D("Hand", "3D.vs.glsl", "tex3D.fs.glsl"));
         }
 
         _player.handleControls();

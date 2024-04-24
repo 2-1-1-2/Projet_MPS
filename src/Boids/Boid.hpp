@@ -23,8 +23,8 @@ private:
 public:
     Boid()
 
-        : Boid(glm::vec3(Math::randomFloat(), Math::randomFloat(), Math::randomFloat()), glm::vec3(Math::randomFloat(), Math::randomFloat(), Math::randomFloat()), 0.5, 0.5, 0.5){};
-    Boid(glm::vec3 p, glm::vec3 v, float avf, float alf, float cof);
+        : Boid(0.5, 0.5, 0.5, glm ::vec3(Math::randUniformC(0, 1), Math::randUniformC(0, 1), Math::randUniformC(0, 1)), glm::vec3(Math::randUniformC(0, 1), Math::randUniformC(0, 1), Math::randUniformC(0, 1))){};
+    Boid(float avf, float alf, float cof, glm::vec3 p, glm::vec3 v);
 
     glm::vec3 getPos() const { return position; }
     void      move(const std::vector<Boid>& boids);
