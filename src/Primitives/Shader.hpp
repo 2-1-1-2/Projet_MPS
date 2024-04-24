@@ -5,8 +5,11 @@ class Shader {
 public:
     // Shader program
     p6::Shader shader;
+    GLint      ID;
 
     // Uniform locations in the shader program
+    GLint uVMatrix;
+    GLint uMMatrix;
     GLint uMVPMatrix;
     GLint uMVMatrix;
     GLint uNormalMatrix;

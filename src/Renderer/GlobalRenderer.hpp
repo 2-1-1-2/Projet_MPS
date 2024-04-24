@@ -11,6 +11,15 @@
 #include "glm/matrix.hpp"
 #include "p6/p6.h"
 
+struct PointLight {
+    glm::vec3 position;
+    glm::vec3 color;
+    float     constant;
+    float     linear;
+    float     quadratic;
+    bool      followPlayer;
+};
+
 class GlobalRenderer {
 private:
     static float     _uKd;             // [GUI]
@@ -23,6 +32,8 @@ private:
     p6::Context*          _ctx;
     TrackballCamera*      _camera;
 
+    std::array<PointLight, 2> pointLights;
+
 public:
     explicit GlobalRenderer(p6::Context* ctx, TrackballCamera* camera);
 
@@ -30,6 +41,4 @@ public:
     void        clearAll();
     static void initializeGUI();
     // void        addObject(Object3D& _objects);
-    // void        clearObjects();
-    // void        close();
 };
