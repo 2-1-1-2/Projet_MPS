@@ -2,6 +2,7 @@
 #include <vector>
 #include "Cameras/TrackballCamera.hpp"
 #include "Controls.hpp"
+#include "GUI/GUIhelper.hpp"
 #include "Maths/Math.hpp"
 #include "Primitives/Object3D.hpp"
 #include "Shapes/Common.hpp"

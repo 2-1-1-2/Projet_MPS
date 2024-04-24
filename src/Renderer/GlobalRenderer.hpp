@@ -3,6 +3,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 #include "Cameras/TrackballCamera.hpp"
+#include "GUI/GUIhelper.hpp"
 #include "Primitives/Object3D.hpp"
 #include "Shapes/Common.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
@@ -11,13 +12,14 @@
 #include "glm/matrix.hpp"
 #include "p6/p6.h"
 
+
 struct PointLight {
     glm::vec3 position;
     glm::vec3 color;
     float     constant;
     float     linear;
     float     quadratic;
-    bool      followPlayer;
+    bool      followPlayer; // Not working right now
 };
 
 class GlobalRenderer {

@@ -7,8 +7,8 @@ Object3D::Object3D(const std::string& name, const std::string& vertexShaderPath,
     defineVAO();
 };
 
-Object3D::Object3D(const std::string& name, const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& skinID)
-    : _model(name), _texture(name + skinID), _shader(vertexShaderPath, fragmentShaderPath)
+Object3D::Object3D(const std::string& name, const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& skinID, const std::string& lodID)
+    : _model(name + lodID), _texture(name + skinID), _shader(vertexShaderPath, fragmentShaderPath)
 {
     defineVBO();
     defineVAO();

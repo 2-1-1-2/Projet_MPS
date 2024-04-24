@@ -66,11 +66,14 @@ void Controls::handlePlayerMovements(glm::vec3& playerPosition)
 
 void Controls::initializeGUI()
 {
-    ImGui::Begin("Controls parameters");
-    ImGui::SliderFloat("Ghost speed", &_movementSpeed, .01f, 1.f);
-    ImGui::SliderFloat("Mouse sensitivity", &_mouseSensitivity, 20.f, 360.f);
-    ImGui::SliderFloat("Scroll sensitivity", &_scrollSensitivity, 0.f, 1.f);
-    ImGui::SliderFloat("Min scroll distance", &_minScrollDistance, 0.f, _maxScrollDistance);
-    ImGui::SliderFloat("Max scroll distance", &_maxScrollDistance, _minScrollDistance, 200.f);
-    ImGui::End();
+    if (ImGui::CollapsingHeader("Controls"))
+    {
+        ImGui::Indent();
+        ImGui::SliderFloat("Ghost speed", &_movementSpeed, .01f, 1.f);
+        ImGui::SliderFloat("Mouse sensitivity", &_mouseSensitivity, 20.f, 360.f);
+        ImGui::SliderFloat("Scroll sensitivity", &_scrollSensitivity, 0.f, 1.f);
+        ImGui::SliderFloat("Min scroll distance", &_minScrollDistance, 0.f, _maxScrollDistance);
+        ImGui::SliderFloat("Max scroll distance", &_maxScrollDistance, _minScrollDistance, 200.f);
+        ImGui::Unindent();
+    }
 }
