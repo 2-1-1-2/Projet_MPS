@@ -15,13 +15,14 @@ private:
 
     void addBoid();
     void deleteBoid();
-    void populateFlock(const unsigned int number);
-    void deleteBoids(const unsigned int number);
 
 public:
     explicit Flock(const unsigned int number);
 
     void move(BoidsMultipliers& boidsMultiplier);
+    void populateFlock(const unsigned int number);
+    void deleteBoids(const unsigned int number);
+    int  getSize();
     void initializeGUI();
 
     std::vector<Boid> getBoids() const { return _boids; }

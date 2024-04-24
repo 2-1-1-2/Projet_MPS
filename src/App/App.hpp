@@ -47,6 +47,33 @@ private:
     int _nb_boids  = 100; // [GUI]
     int _nb_flocks = 5;   // [GUI]
 
+    void regulateFlocks()
+    {
+        while (_flocks.size() > _nb_flocks)
+        {
+            _flocks.pop_back();
+        }
+        while (_flocks.size() < _nb_flocks)
+        {
+            _flocks.push_back(Flock(_nb_boids));
+        }
+    }
+
+    void regulateBoids()
+    {
+        for (auto& flock : _flocks)
+        {
+            if (flock.getSize() > _nb_boids)
+            {
+                flock.deleteBoids(flock.getSize() - _nb_boids);
+            }
+            else if (flock.getSize() < _nb_boids)
+            {
+                flock.populateFlock(_nb_boids);
+            }
+        }
+    }
+
     void gameLogic()
     {
         for (auto& flock : _flocks)
@@ -91,6 +118,9 @@ private:
 
         Transform boundingCubeTransform{{0.f, (_scene.size / 2) - _scene.groundLevel, 0.f}, {0.f, 0.f, 0.f}, _scene.size / _scene.cubeBaseSize};
         _renderer.drawObject(boundingCubeTransform.getTransform(), _scene.boundingCube, _scene.boundingCubeTransparency);
+
+        regulateFlocks();
+        regulateBoids();
     }
 
     void renderFlock()
@@ -187,8 +217,8 @@ private:
         if (ImGui::CollapsingHeader("Boids"))
         {
             ImGui::Indent();
-            // ImGui::SliderInt("Nb of boids", &_nb_boids, 0, 30);
-            // ImGui::SliderInt("Nb of flocks", &_nb_flocks, 0, 10);
+            ImGui::SliderInt("Nb of boids", &_nb_boids, 0, 30);
+            ImGui::SliderInt("Nb of flocks", &_nb_flocks, 0, 10);
             ImGui::SliderInt("LoD", &_LoD, 1, 3);
             GUIhelp("Change quality of the boid's model. The higher the better.");
             ImGui::SliderFloat("Speed", &boidsMultipliers.speed, 0.f, 20.f);

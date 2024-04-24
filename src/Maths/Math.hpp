@@ -10,38 +10,14 @@
 class Math {
 private:
 public:
-    // TODO(tanya): voir pour faire un intervalle
-    /*     static float randomFloat()
-        {
-            constexpr int N   = 10000;
-            float         res = 0;
-            for (int i = 1; i < N; i++)
-            {
-                res += static_cast<float>(rand() % 2) / static_cast<float>(pow(2, i));
-            }
-
-            return res;
-        } */
-
     static float
         rand()
     {
-        /* static std::random_device                    rand;
-        static std::mt19937                          gen(rand());
-        static std::uniform_real_distribution<float> dis(0.0, 1.0); */
-
         thread_local std::default_random_engine gen{std::random_device{}()};
         thread_local auto                       distrib = std::uniform_real_distribution<float>{0.0, 1.0};
 
         return distrib(gen);
-        /*
-                return dis(gen); */
     }
-
-    /*     static int randomSign()
-        {
-            return (randomInt() % 2) == 0 ? 1 : -1;
-        } */
 
     static float randUniformD(int min = 0, int max = 1)
     {
@@ -101,11 +77,9 @@ public:
             else
                 alpha += 1.0;
         }
-        std::cout << "BETA :" << alpha / (beta + alpha) << "with range" << rangeProba(alpha / (beta + alpha), min, max) << "\n";
+        /* std::cout << "BETA :" << alpha / (beta + alpha) << "with range" <<  rangeProba(alpha / (beta + alpha), min, max) << "\n";*/
 
         return rangeProba(alpha / (beta + alpha), min, max);
-        /*
-                return random_beta * (alpha + beta) / alpha; */
     }
     static float noZeroRand() // Pour éviter les 0 dans les log
     {

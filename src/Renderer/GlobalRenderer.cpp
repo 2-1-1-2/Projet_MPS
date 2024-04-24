@@ -57,7 +57,6 @@ void GlobalRenderer::drawObject(const glm::mat4& modelMatrix, const Object3D& ob
     glUniform3f(object.getShader().uKs, _uKs, _uKs, _uKs);
     glUniform3fv(object.getShader().uLightDir_vs, 1, glm::value_ptr(glm::vec4(_lightDir, 1.f) * glm::inverse(viewMatrix)));
     glUniform3fv(object.getShader().uLightPos_vs, 1, glm::value_ptr(viewMatrix * glm::vec4(lightPos, 1.f)));
-    std::cout << _ctx->delta_time() << "\n";
 
     if ((static_cast<int>(_ctx->time()) % 10) == 0 && (static_cast<int>(_ctx->time() - _ctx->delta_time()) % 10) != 0)
     {
@@ -112,7 +111,6 @@ void GlobalRenderer::initializeGUI()
             GUIhelp("Adjust how the light reacts on objects.");
             ImGui::SliderFloat("Diffuse Reflection", &_uKd, 0.f, 10.f);
             ImGui::SliderFloat("Glossy Reflection", &_uKs, 0.f, 10.f);
-            /* ImGui::SliderFloat("Light Intensity", &_uLightIntensity, 0.f, 2.f); */
             ImGui::SliderFloat("Shininess", &_uShininess, 0.f, 80.f);
             ImGui::Unindent();
         }
