@@ -1,5 +1,4 @@
 #include "TrackballCamera.hpp"
-#include <glm/gtc/matrix_transform.hpp>
 
 TrackballCamera::TrackballCamera(glm::vec3* target)
     : m_Target(target), m_Distance(3.f), m_AngleX(0.0f), m_AngleY(0.0f) {}

@@ -10,11 +10,13 @@
 // float     GlobalRenderer::_uShininess      = .006f;         // [GUI]
 
 // Classic light
-float              GlobalRenderer::_uKd             = 2.6f;        // [GUI]
-float              GlobalRenderer::_uKs             = 3.1f;        // [GUI]
-float              GlobalRenderer::_uLightIntensity = 1.3f;        // [GUI]
-float              GlobalRenderer::_uShininess      = 57.f;        // [GUI]
-glm::vec3          GlobalRenderer::_lightDir{-12.5f, -10.f, -6.f}; // [GUI]
+float     GlobalRenderer::_uKd             = 2.6f;        // [GUI]
+float     GlobalRenderer::_uKs             = 3.1f;        // [GUI]
+float     GlobalRenderer::_uLightIntensity = 1.3f;        // [GUI]
+float     GlobalRenderer::_uShininess      = 57.f;        // [GUI]
+glm::vec3 GlobalRenderer::_lightDir{-12.5f, -10.f, -6.f}; // [GUI]
+
+// Meteo
 int                GlobalRenderer::_state = 1;
 std::vector<float> GlobalRenderer::_meteo = {0.8, 0.5, 0.2};
 
@@ -44,7 +46,7 @@ void GlobalRenderer::drawObject(const glm::mat4& modelMatrix, const Object3D& ob
     object.getShader().shader.use();
 
     // Handle transparancy
-    // glDisable(GL_BLEND);
+    glDisable(GL_BLEND);
     if (transparency < 1.f)
     {
         glEnable(GL_BLEND);

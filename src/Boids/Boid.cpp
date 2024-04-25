@@ -84,7 +84,6 @@ void Boid::cohesion(const std::vector<Boid>& boids, const float cohesionMultipli
 void Boid::limitSpeed()
 {
     const float speed = glm::length(velocity);
-    // std::cout << "speed " << speed << "\n";
 
     if (speed > maxSpeed)
     {
@@ -108,57 +107,31 @@ void Boid::move(const std::vector<Boid>& boids, BoidsMultipliers& boidsMultiplie
 
 void Boid::wallCollision()
 {
-    const float limit = limits * 0.325; // Limite pour x, y, z
+    const float limit = limits * 0.325f;
 
-    // Collision sur l'axe x
     float newPos = position.x + velocity.x;
     if (newPos <= -limit || newPos >= limit)
     {
-        position.x = std::clamp(newPos, -limit, limit); // Ajuste la position x dans les limites
-        velocity.x = -velocity.x;                       // Inverse la vitesse x
+        position.x = std::clamp(newPos, -limit, limit);
+        velocity.x = -velocity.x;
     }
 
-    // Collision sur l'axe y (assure que y reste toujours positif et dans les limites)
     newPos = position.y + velocity.y;
     if (newPos <= -.25 || newPos >= limit)
     {
-        position.y = std::clamp(newPos, -.25f, limit); // Ajuste la position y entre 0 et limit
-        velocity.y = -velocity.y;                      // Inverse la vitesse y
+        position.y = std::clamp(newPos, -.25f, limit);
+        velocity.y = -velocity.y;
     }
 
-    // Collision sur l'axe z
     newPos = position.z + velocity.z;
     if (newPos <= -limit || newPos >= limit)
     {
-        position.z = std::clamp(newPos, -limit, limit); // Ajuste la position z dans les limites
-        velocity.z = -velocity.z;                       // Inverse la vitesse z
+        position.z = std::clamp(newPos, -limit, limit);
+        velocity.z = -velocity.z;
     }
-
-    /*
-    float newPosX = position.x + velocity.x;
-float newPosY = position.y + velocity.y;
-float newPosZ = position.z + velocity.z;
-
-if (abs(newPosX) > limits)
-{
-    newPosX = std::clamp(newPosX, -limit, limit);
-}
-if (abs(newPosY) > limits)
-{
-    newPosY = std::clamp(newPosY, -limit, limit);
-}
-if (abs(newPosZ) > limits)
-{
-    newPosZ = std::clamp(newPosZ, -limit, limit);
-}
-
-position.x = newPosX;
-position.y = newPosY;
-position.z = newPosZ;
-    */
 }
 
 void Boid::setLimits(float limit)
 {
-    limits = limit - 0.75;
+    limits = limit - 0.75f;
 }

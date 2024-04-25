@@ -44,5 +44,4 @@ public:
     void        drawObject(const glm::mat4& modelMatrix, const Object3D& object, float transparency = 1.f) const;
     void        clearAll();
     static void initializeGUI();
-    // void        addObject(Object3D& _objects);
 };

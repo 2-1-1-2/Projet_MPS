@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
 class TrackballCamera {
@@ -11,6 +12,7 @@ private:
 
 public:
     // Constructeur
+    TrackballCamera();
     TrackballCamera(glm::vec3* target);
 
     void moveFront(float delta);

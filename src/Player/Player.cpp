@@ -42,6 +42,5 @@ void Player::initializeGUI()
             ImGui::Unindent();
         }
         ImGui::Unindent();
-        // ImGui::SliderFloat("Transparency", &_transparency, .0f, 1.f);
     }
 }

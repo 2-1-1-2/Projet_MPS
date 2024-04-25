@@ -1,7 +1,7 @@
 #pragma once
 #include <cmath>
+#include <cstddef>
 #include <vector>
-#include "../../lib/p6/src/internal/Time/Clock_Realtime.h"
 #include "Boids/Flock.hpp"
 #include "Cameras/TrackballCamera.hpp"
 #include "GUI/GUIhelper.hpp"
@@ -24,36 +24,35 @@ struct Scene {
     Object3D ground{"Ground", "base3D.vs.glsl", "base3D.fs.glsl"};
 
     std::vector<std::pair<float, float>> positions;
-    std::vector<Object3D>                grave;
-    std::vector<Object3D>                hand;
+    std::vector<Object3D>                grave = {};
+    std::vector<Object3D>                hand  = {};
 };
 
 class App {
 private:
     // Game logic
     p6::Context     _ctx = p6::Context{{.title = "Ghost & Graves"}};
-    GlobalRenderer  _renderer;
-    TrackballCamera _camera;
+    GlobalRenderer  _renderer{&_ctx, &_camera};
+    TrackballCamera _camera{&_player.getPosition()};
 
     // Game elements
-    Player             _player;
+    Player             _player{&_ctx, &_camera, &_scene.size};
     std::vector<Flock> _flocks;
     Scene              _scene;
 
     int              _LoD = 3;         // [GUI]
     BoidsMultipliers boidsMultipliers; // [GUI]
 
-    /// TODO: Faire en sorte qu'on puisse le modifier dans le GUI et que ça impacte le jeu
     int _nb_boids  = 100; // [GUI]
     int _nb_flocks = 5;   // [GUI]
 
     void regulateFlocks()
     {
-        while (_flocks.size() > _nb_flocks)
+        while (_flocks.size() > static_cast<size_t>(_nb_flocks))
         {
             _flocks.pop_back();
         }
-        while (_flocks.size() < _nb_flocks)
+        while (_flocks.size() < static_cast<size_t>(_nb_flocks))
         {
             _flocks.push_back(Flock(_nb_boids));
         }
@@ -146,18 +145,17 @@ private:
 
 public:
     explicit App()
-        : _renderer(&_ctx, &_camera), _player(&_ctx, &_camera, &_scene.size), _camera(&_player.getPosition())
     {
         _ctx.maximize_window();
 
         // Instantiate flock
-        for (unsigned int i = 0; i < _nb_flocks; i++)
+        for (size_t i = 0; i < static_cast<size_t>(_nb_flocks); i++)
         {
             _flocks.push_back(Flock(_nb_boids));
         }
 
-        int nb = Math::randBinomial(0.6, 15);
-        for (unsigned int i = 0; i < nb; i++)
+        size_t nb = Math::randBinomial(0.6, 15);
+        for (size_t i = 0; i < nb; i++)
         {
             _scene.positions.push_back(std::make_pair(Math::randBeta(0.5, 0.5, -10, 10), Math::randBeta(0.5, 0.5, -10, 10)));
 

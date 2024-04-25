@@ -17,11 +17,11 @@ private:
     void deleteBoid();
 
 public:
-    explicit Flock(const unsigned int number);
+    explicit Flock(unsigned int number);
 
     void move(BoidsMultipliers& boidsMultiplier);
-    void populateFlock(const unsigned int number);
-    void deleteBoids(const unsigned int number);
+    void populateFlock(unsigned int number);
+    void deleteBoids(unsigned int number);
     int  getSize();
     void regulateBoids(int _nb_boids);
     void initializeGUI();

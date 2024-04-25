@@ -3,6 +3,8 @@
 #include "Transform.hpp"
 #include "p6/p6.h"
 
+// Unused object but could be used later
+
 class GameObject {
 protected: // Changed from private to protected for inheritance access
     Object3D  _object3D;
