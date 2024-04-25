@@ -38,3 +38,22 @@ int Flock::getSize()
 {
     return _boids.size();
 }
+
+void Flock::regulateBoids(int _nb_boids)
+{
+    if (getSize() > _nb_boids)
+    {
+        deleteBoids(getSize() - _nb_boids);
+    }
+    else if (getSize() < _nb_boids)
+    {
+        populateFlock(_nb_boids);
+    }
+}
+void Flock::setLimits(float limit)
+{
+    for (auto& boid : _boids)
+    {
+        boid.setLimits(limit);
+    }
+}

@@ -63,21 +63,24 @@ private:
     {
         for (auto& flock : _flocks)
         {
-            if (flock.getSize() > _nb_boids)
-            {
-                flock.deleteBoids(flock.getSize() - _nb_boids);
-            }
-            else if (flock.getSize() < _nb_boids)
-            {
-                flock.populateFlock(_nb_boids);
-            }
+            flock.regulateBoids(_nb_boids);
+        }
+    }
+    void limitsBoids()
+    {
+        for (auto& flock : _flocks)
+        {
+            flock.setLimits(_scene.size / _scene.groundBaseSize);
         }
     }
 
     void gameLogic()
     {
         for (auto& flock : _flocks)
+        {
+            limitsBoids();
             flock.move(boidsMultipliers);
+        }
 
         _player.handleMovements();
     }

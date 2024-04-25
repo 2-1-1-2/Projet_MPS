@@ -23,7 +23,9 @@ public:
     void populateFlock(const unsigned int number);
     void deleteBoids(const unsigned int number);
     int  getSize();
+    void regulateBoids(int _nb_boids);
     void initializeGUI();
+    void setLimits(float limit);
 
     std::vector<Boid> getBoids() const { return _boids; }
     Object3D&         getObject3D(const int LoD)

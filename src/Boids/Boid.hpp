@@ -21,6 +21,7 @@ private:
     float                  cohesionFactor;
     glm::vec3              position;
     glm::vec3              velocity;
+    static float           limits;
     static constexpr float distAVF = .4;
     static constexpr float distALF = 1;
     static constexpr float distCOF = 2;
@@ -41,4 +42,5 @@ public:
     void      avoid(const std::vector<Boid>& boids, const float avoidMultiplier);
     void      alignment(const std::vector<Boid>& boids, const float alignmentMultiplier);
     void      cohesion(const std::vector<Boid>& boids, const float cohesionMultiplier);
+    void      setLimits(float limit);
 };
