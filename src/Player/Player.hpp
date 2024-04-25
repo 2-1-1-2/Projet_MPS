@@ -15,7 +15,7 @@ private:
     Controls         _controls;
     glm::vec3        _position{0.f, 0.f, 0.f};
 
-    Object3D _object3D{"Ghost", "3D.vs.glsl", "tex3D.fs.glsl"};
+    Object3D _object3D{"Ghost", "base3D.vs.glsl", "base3D.fs.glsl"};
 
     float _hoverAmplitude = 0.1f; // [GUI]
     float _hoverFrequency = 2.0f; // [GUI]

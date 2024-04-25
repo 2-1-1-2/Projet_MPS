@@ -2,17 +2,19 @@
 #include <cmath>
 
 // Global directional illumination parameters
+
 // Cell shading light
 // float     GlobalRenderer::_uKd             = 0.1f;          // [GUI]
 // float     GlobalRenderer::_uKs             = 1.14f;         // [GUI]
 // float     GlobalRenderer::_uLightIntensity = .012f;         // [GUI]
 // float     GlobalRenderer::_uShininess      = .006f;         // [GUI]
+
 // Classic light
-float              GlobalRenderer::_uKd             = 1.1f;          // [GUI]
-float              GlobalRenderer::_uKs             = 0.2f;          // [GUI]
-float              GlobalRenderer::_uLightIntensity = 1.3f;          // [GUI]
-float              GlobalRenderer::_uShininess      = 30.f;          // [GUI]
-glm::vec3          GlobalRenderer::_lightDir{17.36f, 15.48f, 7.81f}; // [GUI]
+float              GlobalRenderer::_uKd             = 2.6f;        // [GUI]
+float              GlobalRenderer::_uKs             = 3.1f;        // [GUI]
+float              GlobalRenderer::_uLightIntensity = 1.3f;        // [GUI]
+float              GlobalRenderer::_uShininess      = 57.f;        // [GUI]
+glm::vec3          GlobalRenderer::_lightDir{-12.5f, -10.f, -6.f}; // [GUI]
 int                GlobalRenderer::_state = 1;
 std::vector<float> GlobalRenderer::_meteo = {0.8, 0.5, 0.2};
 
@@ -42,14 +44,11 @@ void GlobalRenderer::drawObject(const glm::mat4& modelMatrix, const Object3D& ob
     object.getShader().shader.use();
 
     // Handle transparancy
+    // glDisable(GL_BLEND);
     if (transparency < 1.f)
     {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    }
-    else
-    {
-        glDisable(GL_BLEND);
     }
 
     // Directional light uniforms
@@ -117,9 +116,9 @@ void GlobalRenderer::initializeGUI()
         if (ImGui::CollapsingHeader("Directional light"))
         {
             ImGui::Indent();
-            ImGui::SliderFloat("X", &_lightDir.x, -30.f, 30.f);
-            ImGui::SliderFloat("Y", &_lightDir.y, -1.f, 30.f);
-            ImGui::SliderFloat("Z", &_lightDir.z, -30.f, 30.f);
+            ImGui::SliderFloat("X", &_lightDir.x, -60.f, 60.f);
+            ImGui::SliderFloat("Y", &_lightDir.y, -10.f, 60.f);
+            ImGui::SliderFloat("Z", &_lightDir.z, -60.f, 60.f);
             ImGui::Unindent();
         }
         ImGui::Unindent();

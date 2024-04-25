@@ -15,7 +15,7 @@ private:
     GLuint _vao{};
 
 public:
-    explicit Object3D(const std::string& name = "BoundingCube", const std::string& vertexShaderPath = "3D.vs.glsl", const std::string& fragmentShaderPath = "tex3D.fs.glsl");
+    explicit Object3D(const std::string& name = "BoundingCube", const std::string& vertexShaderPath = "base3D.vs.glsl", const std::string& fragmentShaderPath = "base3D.fs.glsl");
     explicit Object3D(const std::string& name, const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& skinID, const std::string& lodID);
 
     void defineVBO();

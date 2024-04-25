@@ -5,7 +5,7 @@ Player::Player(p6::Context* ctx, TrackballCamera* camera, float* mapSize)
 {
     if (Math::randBernouilli(1))
     {
-        _object3D = Object3D("Amongus", "3D.vs.glsl", "tex3D.fs.glsl");
+        _object3D = Object3D("Amongus", "base3D.vs.glsl", "base3D.fs.glsl");
     }
 }
 

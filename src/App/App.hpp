@@ -20,8 +20,8 @@ struct Scene {
     float    size                     = 50.f; // [GUI]
     float    groundLevel              = 5.f;  // [GUI]
     float    boundingCubeTransparency = 1.f;
-    Object3D boundingCube{"BoundingCube", "3D.vs.glsl", "tex3D.fs.glsl"};
-    Object3D ground{"Ground", "3D.vs.glsl", "tex3D.fs.glsl"};
+    Object3D boundingCube{"BoundingCube", "skybox.vs.glsl", "skybox.fs.glsl"};
+    Object3D ground{"Ground", "base3D.vs.glsl", "base3D.fs.glsl"};
 
     std::vector<std::pair<float, float>> positions;
     std::vector<Object3D>                grave;
@@ -31,7 +31,7 @@ struct Scene {
 class App {
 private:
     // Game logic
-    p6::Context     _ctx = p6::Context{{.title = "Projet_MPS"}}; // plutôt à mettre dans le main et à passer en parametre ?
+    p6::Context     _ctx = p6::Context{{.title = "Ghost & Graves"}};
     GlobalRenderer  _renderer;
     TrackballCamera _camera;
 
@@ -90,9 +90,6 @@ private:
         _renderer.clearAll();
 
         _ctx.background(p6::NamedColor::Blue);
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glEnable(GL_DEPTH_TEST);
 
         Transform groundTransform{{0.f, -1.f, 0.f}, {0.f, 0.f, 0.f}, _scene.size / _scene.groundBaseSize};
         _renderer.drawObject(groundTransform.getTransform(), _scene.ground);
@@ -164,9 +161,9 @@ public:
         {
             _scene.positions.push_back(std::make_pair(Math::randBeta(0.5, 0.5, -10, 10), Math::randBeta(0.5, 0.5, -10, 10)));
 
-            _scene.grave.push_back(Object3D("Grave", "3D.vs.glsl", "tex3D.fs.glsl"));
+            _scene.grave.push_back(Object3D("Grave", "base3D.vs.glsl", "base3D.fs.glsl"));
 
-            _scene.hand.push_back(Object3D("Hand", "3D.vs.glsl", "tex3D.fs.glsl"));
+            _scene.hand.push_back(Object3D("Hand", "base3D.vs.glsl", "base3D.fs.glsl"));
         }
 
         _player.handleControls();
@@ -220,7 +217,7 @@ private:
         if (ImGui::CollapsingHeader("Boids"))
         {
             ImGui::Indent();
-            ImGui::SliderInt("Nb of boids", &_nb_boids, 0, 30);
+            ImGui::SliderInt("Nb of boids", &_nb_boids, 0, 100);
             ImGui::SliderInt("Nb of flocks", &_nb_flocks, 0, 10);
             ImGui::SliderInt("LoD", &_LoD, 1, 3);
             GUIhelp("Change quality of the boid's model. The higher the better.");

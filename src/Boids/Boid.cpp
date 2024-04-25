@@ -108,7 +108,7 @@ void Boid::move(const std::vector<Boid>& boids, BoidsMultipliers& boidsMultiplie
 
 void Boid::wallCollision()
 {
-    const float limit = limits * 0.75; // Limite pour x, y, z
+    const float limit = limits * 0.325; // Limite pour x, y, z
 
     // Collision sur l'axe x
     float newPos = position.x + velocity.x;
@@ -161,5 +161,4 @@ position.z = newPosZ;
 void Boid::setLimits(float limit)
 {
     limits = limit - 0.75;
-    std::cout << "LIMITS" << limit << "\n";
 }

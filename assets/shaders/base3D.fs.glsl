@@ -31,8 +31,8 @@ vec3 blinnPhongDirectionalLight() {
     vec3 L_i = uLightIntensity;
     vec3 w_0 = normalize(-vPosition_vs);
     vec3 halfV = normalize(w_0 + w_i);
-    float dot_1 = max(dot(normalize(vNormal_vs), w_i), 0.0);
-    float dot_2 = pow(max(dot(normalize(vNormal_vs), halfV), 0.0), uShininess);
+    float dot_1 = max(dot(normalize(-vNormal_vs), w_i), 0.0);
+    float dot_2 = pow(max(dot(normalize(-vNormal_vs), halfV), 0.0), uShininess);
 
     return L_i * (uKd * dot_1 + uKs * dot_2);
 }
