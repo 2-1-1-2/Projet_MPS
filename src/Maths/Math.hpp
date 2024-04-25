@@ -71,8 +71,6 @@ public:
         }
         const float v_y = pow(_u1, 1.f / alpha) / ((pow(_u1, 1.f / alpha) + pow(_u2, 1.f / beta)));
 
-        std::cout << "beta dist : " << v_y << "\n";
-
         return rangeProba(v_y, min, max);
     }
     static float noZeroRand() // Pour éviter les 0 dans les log

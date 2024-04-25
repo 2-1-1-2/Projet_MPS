@@ -8,12 +8,6 @@
 
 int main()
 {
-    std::srand(time(NULL));
-
-    // Run the tests
-    if (doctest::Context{}.run() != 0)
-        return EXIT_FAILURE;
-
     App App;
 
     // Setup context GUI and update loop
