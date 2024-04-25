@@ -48,6 +48,8 @@ public:
 
     static float randExponential(float lambda)
     {
+        float x = -std::log(1 - randUniformC()) / lambda;
+        std::cout << "x : " << x << "/ 1/x : " << 1 / x << "/ lambda : " << lambda << "\n";
         return -std::log(1 - randUniformC()) / lambda;
     }
 
@@ -83,10 +85,23 @@ public:
         return v_x;
     }
 
-    static float randHyperGeom()
-    {
-        return 0;
-    }
+    /*     static int coefBinomial(int n, int k)
+        {
+            if (k > n)
+                return 0;
+            if (k == 0 || k == n)
+                return 1;
+
+            return coefBinomial(n - 1, k - 1) + coefBinomial(n - 1, k);
+        } */
+
+    /*     static float randHyperGeom(const float proba, const int N)
+        {
+            const float _pN = proba;
+            const float _qN = 1 - proba;
+            / * int v_p = math::binomial_coefficient; * /
+            return 0;
+        } */
 
     static float rangeProba(float proba, float min, float max)
     {

@@ -7,7 +7,6 @@ L’implémentation doit réaliser la simulation d’au mininum huitariables al�
     - [x] Loi de Bernouilli
     - [x] Loi Binomiale
     - [ ] Loi Exponentielle
-    - [ ] Loi Hypergéométrique
     - [ ] Loi Normale
     - [x] Loi Uniforme (discrète et continue)
     - [ ] La Chaine de Markov
