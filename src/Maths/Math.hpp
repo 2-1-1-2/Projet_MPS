@@ -10,8 +10,7 @@
 class Math {
 private:
 public:
-    static float
-        rand()
+    static float rand()
     {
         thread_local std::default_random_engine gen{std::random_device{}()};
         thread_local auto                       distrib = std::uniform_real_distribution<float>{0.0, 1.0};
@@ -19,9 +18,9 @@ public:
         return distrib(gen);
     }
 
-    static float randUniformD(int min = 0, int max = 1)
+    static int randUniformD(int min = 0, int max = 1)
     {
-        return static_cast<int>(rangeProba(rand(), min, max));
+        return static_cast<int>(round(rangeProba(rand(), static_cast<float>(min), static_cast<float>(max))));
     }
 
     static float randUniformC(float min = 0, float max = 1)
@@ -31,13 +30,13 @@ public:
 
     static bool randBernouilli(float proba)
     {
-        return randUniformC() <= proba;
+        return rand() <= proba;
     }
 
     static int randBinomial(float proba, float n)
     {
-        static int success;
-        for (unsigned int i = 0; i < n; i++)
+        int success = 0;
+        for (unsigned int i = 0; i < static_cast<unsigned int>(n); i++)
         {
             if (randBernouilli(proba))
             {
@@ -47,61 +46,46 @@ public:
         return success;
     }
 
-    static float randExponential(float lambda) { return -std::log(1 - randUniformC()) / lambda; }
+    static float randExponential(float lambda)
+    {
+        return -std::log(1 - randUniformC()) / lambda;
+    }
 
     static float randNormale()
     {
-        float u1 = noZeroRand();
-        float u2 = randUniformC();
+        float _u1 = noZeroRand();
+        float _u2 = randUniformC();
 
-        return std::sqrt(-2.0f * std::log(u1)) * std::cos(2.0f * static_cast<float>(M_PI) * u2);
+        return std::sqrt(-2.0f * std::log(_u1)) * std::cos(2.0f * static_cast<float>(M_PI) * _u2);
     }
 
     static float randBeta(float alpha, float beta, float min = 0, float max = 1)
+
     {
-        float u1     = noZeroRand();
-        float u2     = noZeroRand();
-        float gamma1 = -log(u1);
-        float gamma2 = -log(u2);
-
-        float random_beta = gamma1 / (gamma1 + gamma2);
-        /* std::cout << "BETA :" << random_beta * (alpha + beta) / alpha << "\n"; */
-
-        float x = 0.0;
-
-        for (int i = 0; i < 2000; i++)
+        float _u1 = rand();
+        float _u2 = rand();
+        while (pow(_u1, 1. / alpha) + pow(_u2, 1. / beta) > 1)
         {
-            x = randUniformC();
-            if (x < beta / (beta + alpha))
-                beta += 1.0;
-            else
-                alpha += 1.0;
+            _u1 = rand();
+            _u2 = rand();
         }
-        /* std::cout << "BETA :" << alpha / (beta + alpha) << "with range" <<  rangeProba(alpha / (beta + alpha), min, max) << "\n";*/
+        const float v_y = pow(_u1, 1.f / alpha) / ((pow(_u1, 1.f / alpha) + pow(_u2, 1.f / beta)));
 
-        return rangeProba(alpha / (beta + alpha), min, max);
+        std::cout << "beta dist : " << v_y << "\n";
+
+        return rangeProba(v_y, min, max);
     }
     static float noZeroRand() // Pour éviter les 0 dans les log
     {
-        float x = randUniformC();
-        while (x == 0)
+        float v_x = randUniformC();
+        while (v_x == 0)
         {
-            x = randUniformC();
+            v_x = randUniformC();
         }
-        return x;
+        return v_x;
     }
 
     static float randHyperGeom()
-    {
-        return 0;
-    }
-
-    static void toString(std::string name, float proba, float tirage)
-    {
-        std::cout << "Loi" << name << "\nProba : " << proba << "\nTirage : " << tirage << "\n\n\n";
-    }
-
-    static float esperance()
     {
         return 0;
     }
@@ -115,15 +99,9 @@ public:
         return min + proba * (max - min);
     }
 
-    static int
-        markovChain(int state)
+    static int markovChain(int state)
     {
-        static std::vector<std::vector<float>> stateMarkovProb = {{0.4, 0.3, 0.4}, {0.2, 0.4, 0.4}, {0.3, 0.3, 0.4}};
-        // verification de la somme des proba
-        /*
-        float                                  sum             = std::accumulate(stateMarkovProb[state].begin(), stateMarkovProb[state].end(), 0.);
-        if (sum != 1)
-            return -1; */
+        const std::vector<std::vector<float>> stateMarkovProb = {{0.4, 0.4, 0.2}, {0.2, 0.4, 0.4}, {0.1, 0.1, 0.8}};
 
         const float rand = randUniformC();
         int         cpt  = 0;
@@ -135,5 +113,27 @@ public:
         }
 
         return cpt;
+    }
+
+    static float esperance(const std::vector<float>& draws)
+    {
+        float sum = 0.0;
+        for (float val : draws)
+        {
+            sum += val;
+        }
+        return sum / static_cast<float>(draws.size());
+    }
+
+    static float variance(const std::vector<float>& draws)
+    {
+        float moyenne       = esperance(draws);
+        float sumSquareDiff = 0.0;
+        for (float val : draws)
+        {
+            float diff = val - moyenne;
+            sumSquareDiff += diff * diff;
+        }
+        return sumSquareDiff / static_cast<float>(draws.size());
     }
 };

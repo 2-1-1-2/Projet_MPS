@@ -54,7 +54,7 @@ private:
         }
         while (_flocks.size() < static_cast<size_t>(_nb_flocks))
         {
-            _flocks.push_back(Flock(_nb_boids));
+            _flocks.emplace_back(_nb_boids);
         }
     }
 
@@ -99,7 +99,7 @@ private:
             _renderer.drawObject(graveTransform.getTransform(), _scene.grave[i]);
         }
 
-        float hand_position = (static_cast<int>(_ctx.time()) / 2 % 2 == 0 ? -std::fmod(_ctx.time(), 2) : std::fmod(_ctx.time(), 2) - 2) - 1.2;
+        float hand_position = (static_cast<int>(_ctx.time()) / 2 % 2 == 0 ? -std::fmod(_ctx.time(), 2.f) : std::fmod(_ctx.time(), 2.f) - 2.f) - 1.2f;
         for (unsigned int i = 0; i < _scene.hand.size(); i++)
         {
             Transform graveTransform{{_scene.positions[i].first, -1.f, _scene.positions[i].second}, {0.f, 0.f, 0.f}, .7f};
@@ -126,9 +126,9 @@ private:
     {
         for (auto& flock : _flocks)
         {
-            for (auto& b : flock.getBoids()) // access by reference to avoid copying
+            for (auto& boids : flock.getBoids()) // access by reference to avoid copying
             {
-                Transform flockTransform{b.getPos() * glm::vec3{3.f}, {0.f, 0.f, 0.f}, .075f};
+                Transform flockTransform{boids.getPos() * glm::vec3{3.f}, {0.f, 0.f, 0.f}, .075f};
                 _renderer.drawObject(flockTransform.getTransform(), flock.getObject3D(_LoD));
             }
         }
