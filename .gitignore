@@ -36,5 +36,3 @@ build
 # VScode local files
 # .vscode
 # settings.json
-
-/src/Maths/MathTest.hpp
