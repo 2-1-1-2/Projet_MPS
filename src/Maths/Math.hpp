@@ -53,12 +53,12 @@ public:
         return -std::log(1 - randUniformC()) / lambda;
     }
 
-    static float randNormale()
+    static float randNormale(int n = 1)
     {
         float _u1 = noZeroRand();
         float _u2 = randUniformC();
 
-        return std::sqrt(-2.0f * std::log(_u1)) * std::cos(2.0f * static_cast<float>(M_PI) * _u2);
+        return std::sqrt(-2.0f * std::log(_u1)) * std::cos(2.0f * static_cast<float>(M_PI) * _u2) * static_cast<float>(n) + static_cast<float>(n);
     }
 
     static float randBeta(float alpha, float beta, float min = 0, float max = 1)

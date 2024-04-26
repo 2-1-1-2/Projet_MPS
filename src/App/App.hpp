@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include <cmath>
 #include <cstddef>
 #include <vector>
@@ -24,8 +25,9 @@ struct Scene {
     Object3D ground{"Ground", "base3D.vs.glsl", "base3D.fs.glsl"};
 
     std::vector<std::pair<float, float>> positions;
-    std::vector<Object3D>                grave = {};
-    std::vector<Object3D>                hand  = {};
+    std::vector<Object3D>                grave   = {};
+    std::vector<Object3D>                hand    = {};
+    int                                  nb_hand = 0;
 };
 
 class App {
@@ -100,7 +102,7 @@ private:
         }
 
         float hand_position = (static_cast<int>(_ctx.time()) / 2 % 2 == 0 ? -std::fmod(_ctx.time(), 2.f) : std::fmod(_ctx.time(), 2.f) - 2.f) - 1.2f;
-        for (unsigned int i = 0; i < _scene.hand.size(); i++)
+        for (unsigned int i = 0; i < _scene.nb_hand; i++)
         {
             Transform graveTransform{{_scene.positions[i].first, -1.f, _scene.positions[i].second}, {0.f, 0.f, 0.f}, .7f};
             _renderer.drawObject(graveTransform.getTransform(), _scene.grave[i]);
@@ -163,6 +165,7 @@ public:
 
             _scene.hand.push_back(Object3D("Hand", "base3D.vs.glsl", "base3D.fs.glsl"));
         }
+        _scene.nb_hand = static_cast<int>(std::fmin(Math::randNormale(floor(nb / 2.)), _scene.grave.size()));
 
         _player.handleControls();
     }

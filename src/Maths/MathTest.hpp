@@ -73,17 +73,24 @@ public:
         std::cout << "V(X) = " << 1. / (lambda * lambda) << "\n\n";
     }
 
-    static void randNormaleTest()
+    static void randNormaleTest(int n = 1)
     {
         std::vector<float> draws;
         for (unsigned int i = 0; i < 2000; i++)
         {
-            draws.emplace_back(Math::randNormale());
+            draws.emplace_back(Math::randNormale(n));
         }
         testProb(draws, "normale");
-
-        std::cout << "E(X) = 0\n";
-        std::cout << "V(X) = 1\n\n";
+        if (n > 1)
+        {
+            std::cout << "E(X) =" << n << "\n";
+            std::cout << "V(X) =" << n * n << "\n\n";
+        }
+        else
+        {
+            std::cout << "E(X) = 0\n";
+            std::cout << "V(X) = 1\n\n";
+        }
     }
 
     static void randBetaTest(float alpha, float beta)

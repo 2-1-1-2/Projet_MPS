@@ -16,6 +16,9 @@ float     GlobalRenderer::_uLightIntensity = 1.3f;        // [GUI]
 float     GlobalRenderer::_uShininess      = 57.f;        // [GUI]
 glm::vec3 GlobalRenderer::_lightDir{-12.5f, -10.f, -6.f}; // [GUI]
 
+float GlobalRenderer::_time = Math::randExponential(1. / 10.);
+float GlobalRenderer::_deltatime;
+
 // Meteo
 int                GlobalRenderer::_state = 1;
 std::vector<float> GlobalRenderer::_meteo = {0.8, 0.5, 0.2};
@@ -59,8 +62,9 @@ void GlobalRenderer::drawObject(const glm::mat4& modelMatrix, const Object3D& ob
     glUniform3fv(object.getShader().uLightDir_vs, 1, glm::value_ptr(glm::vec4(_lightDir, 1.f) * glm::inverse(viewMatrix)));
     glUniform3fv(object.getShader().uLightPos_vs, 1, glm::value_ptr(viewMatrix * glm::vec4(lightPos, 1.f)));
 
-    if ((static_cast<int>(_ctx->time()) % 10) == 0 && (static_cast<int>(_ctx->time() - _ctx->delta_time()) % 10) != 0)
+    if (static_cast<int>(fmod(_ctx->time(), _time)) == 0 && (static_cast<int>(fmod(_ctx->time() - _ctx->delta_time(), _time)) != 0))
     {
+        _time            = Math::randExponential(1. / 10.);
         _uLightIntensity = _meteo[Math::markovChain(_state)];
     }
     glUniform3f(object.getShader().uLightIntensity, _uLightIntensity, _uLightIntensity, _uLightIntensity);

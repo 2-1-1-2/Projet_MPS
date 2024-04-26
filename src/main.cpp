@@ -8,23 +8,26 @@
 #include "p6/p6.h"
 
 int main()
-{
-    std::vector<float> draws;
-    MathTest::randBernouilliTest(0.7);
-    MathTest::randBinomialTest(0.7, 20);
-    MathTest::randUniformDTest();
-    MathTest::randUniformCTest();
-    MathTest::randExponentialTest(4);
-    MathTest::randNormaleTest();
-    /*
-    MathTest::randBetaTest(0.5, 0.5);
-    MathTest::randHyperGeomTest(); */
-    /* App App;
+{ /*
+     std::vector<float> draws;
+     MathTest::randBernouilliTest(0.7);
+     MathTest::randBinomialTest(0.7, 20);
+     MathTest::randUniformDTest();
+     MathTest::randUniformCTest();
+     MathTest::randExponentialTest(1. / 10.);
+     MathTest::randNormaleTest(10);
+
+     MathTest::randBetaTest(0.5, 0.5);
+
+
+     MathTest::randHyperGeomTest(); */
+    ///*
+    App App;
 
     // Setup context GUI and update loop
     App.GUI();
     App.update();
 
     App.start();
-    App.stop(); */
+    App.stop(); //*/
 }

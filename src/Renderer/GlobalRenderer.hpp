@@ -31,6 +31,8 @@ private:
     static glm::vec3          _lightDir;        // [GUI]
     static int                _state;
     static std::vector<float> _meteo;
+    static float              _time;
+    static float              _deltatime;
 
     std::vector<Object3D> _objects;
     p6::Context*          _ctx;
